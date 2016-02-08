@@ -118,25 +118,17 @@ needs it, "jiff install" picks up on that fact and uses the appropriate
 method, without having to use your command-line syntax to tell the
 difference.
 
-### Create a git repo in the root directory
-
-    jiff slash-git
-
-This is an example of a task that is specific to the way I administer my
-systems, using a git repo to version control important configuration
-files before messing with them.
-
 ### Create a new generic jiff task
 
-    jiff task --new [task name]
+    jiff task --add [task name]
 
 ### Create a new platform-specific jiff task (for the current platform)
 
-    jiff task --new --platform [task name]
+    jiff task --add --platform [task name]
 
 ### Create a new platform-specific jiff task (for another platform)
 
-    jiff task --new --platform=[platform name] [task name]
+    jiff task --add --platform=[platform name] [task name]
 
 ### Add a new platform
 
@@ -144,7 +136,7 @@ files before messing with them.
 
 If you want the "jiff use auto" task to work with your new platform, you
 will need to clone my bash-libs repo and implement your own detection in
-"../bash-libs/lib/basics.sh".
+"../bash-libs/lib/commonlib.sh".
 
 Otherwise you can still tell jiff to use the platform by specifying it
 directly instead of "auto".
@@ -162,6 +154,10 @@ use.  Jiff tasks can be any executable whatsoever, thanks to [sub].
 
 ## Sub
 
+This repo was based on [sub].
+
+## Other
+
 Jiff tasks should check to see whether their particular job has already
 been done and exit gracefully (return 0) if so.  That allows any jiff
 task can run another jiff task as a prerequisite and not have to worry
@@ -171,10 +167,6 @@ twice because two parts of the task have the same prereq.
 Prior to using any platform-specific jiff tasks, you'll want to run
 "jiff use auto" to set up the links for your distro (ubuntu, centos,
 etc.)
-
-## Built with
-
-This repo was based on [sub].
 
 [jiff]: https://github.com/binaryphile/jiff
 [git]: https://git-scm.com/
