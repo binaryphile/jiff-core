@@ -2,7 +2,7 @@
 # Usage: jiff install [package]
 # Summary: Install and configure a system package
 
-source basiclib
+source commonlib
 source jifflib
 source platformlib
 
