@@ -24,13 +24,16 @@ new_task () {
   local filename
 
   taskname="${1}"
-  if [[ -z "${taskname}" ]]; then
+  if is_empty "${taskname}"; then
     usage
     exit
   fi
   filename="jiff-${taskname}"
   push_dir "${_JIFF_ROOT}"
-  ! is_file "${filename}" || echoerr "Task already exists!" && exit 1
+  if is_file "${filename}"; then
+    echoerr "Task already exists!"
+    exit 1
+  fi
   install -m 755 "${_JIFF_ROOT}/../share/jiff/jiff-sample-task" "${filename}"
   ! shell_is_bash || tail -100 "${HOME}/.bash_history" >> "${filename}"
   pop_dir
