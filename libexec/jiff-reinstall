@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Usage: jiff reinstall
-# Summary: Reinstall jiff
+# Usage: jiff reinstall [package]
+# Summary: Reinstall a system package
 
 source commonlib
-# source jifflib # jiff-specific functions
-# source platformlib # platform-specific functions
+source jifflib # jiff-specific functions
+source platformlib # platform-specific functions
 
 strict_mode_on
 # trace_on # for debugging while developing
 
-rm -rf "${_JIFF_ROOT}"
-basher uninstall binaryphile/jiff-core
-basher uninstall binaryphile/bash-libs
-# TODO: install the user's version not mine
-basher install binaryphile/jiff-personal
+package="${1}"
+
+run_and_exit_if_is_jiff_task "${package}-reinstall"
+uninstall_package "${package}"
+install_package "${package}"

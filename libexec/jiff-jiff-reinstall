@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Usage: jiff jiff-reinstall
+# Summary: Reinstall jiff
+
+source commonlib
+
+strict_mode_on
+# trace_on # for debugging while developing
+
+# TODO: make this read the deps file
+basher uninstall binaryphile/bash-libs
+basher uninstall binaryphile/jiff-core
+# TODO: make this uninstall the user's jiff, not mine
+basher uninstall binaryphile/jiff-personal
+# TODO: make this install the user's jiff, not mine
+basher install binaryphile/jiff-personal
+jiff use auto
