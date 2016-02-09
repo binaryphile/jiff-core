@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage: jiff use [rhel-6.7|centos-6.5|ubuntu-14.04|ubuntu-15.10|auto|none]
-# Summary: Add system-specific commands from the named system
+# Summary: Add platform-specific commands from the named platform
 
 source commonlib
 
@@ -20,16 +20,16 @@ EOM
 fi
 
 LibExec="${_JIFF_ROOT}/libexec"
-CurrentLink="${LibExec}/system/current"
+CurrentLink="${LibExec}/platforms/current"
 
 make_links () {
-  local system
+  local platform
   local file
   local link
 
-  system="${1}"
+  platform="${1}"
 
-  make_symlink "${CurrentLink}" "${system}"
+  make_symlink "${CurrentLink}" "${platform}"
   for file in ${CurrentLink}/jiff-*; do
     link="$(base_name "${file}")"
     make_symlink "${LibExec}/${link}" "${file}"
@@ -37,11 +37,11 @@ make_links () {
 }
 
 jiff_auto () {
-  local system
+  local platform
 
   exit_if_is_link "${CurrentLink}"
-  system="$(detect_os)"
-  jiff use "${system}"
+  platform="$(detect_os)"
+  jiff use "${platform}"
 }
 
 remove_links () {
@@ -69,11 +69,11 @@ report_current () {
   echo "Currently using: ${current}"
 }
 
-system="${1:-}"
+platform="${1:-}"
 
-case "${system}" in
+case "${platform}" in
 "rhel-6.7" | "centos-6.5" | "ubuntu-14.04" | "ubuntu-15.10" )
-  make_links "${system}"
+  make_links "${platform}"
   ;;
 "auto" )
   jiff_auto

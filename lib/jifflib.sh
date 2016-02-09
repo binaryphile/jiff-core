@@ -2,25 +2,25 @@
 
 # Functions specific to jiff but not platform-specific
 
-source basics
+source commonlib
 
-is_jiff_command () {
+is_jiff_task () {
   is_file "${_JIFF_ROOT}/libexec/jiff-${1}"
 }
 
-run_and_exit_if_is_jiff_command () {
-  local command
+run_and_exit_if_is_jiff_task () {
+  local task
 
-  command="${1}"
-  ! is_jiff_command "${command}" || exec jiff "${command}"
+  task="${1}"
+  ! is_jiff_task "${task}" || exec jiff "${task}"
 }
 
-run_if_is_jiff_command () {
-  local command
+run_if_is_jiff_task () {
+  local task
 
-  command="${1}"
-  if is_jiff_command "${command}"; then
-    jiff "${command}"
+  task="${1}"
+  if is_jiff_task "${task}"; then
+    jiff "${task}"
   else
      return 1
   fi
