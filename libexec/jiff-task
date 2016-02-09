@@ -34,14 +34,31 @@ add_task () {
   fi
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
-  ! shell_is_bash || tail -100 "${HOME}/.bash_history" >> "${filename}"
+  ! shell_is_bash || tail -50 "${HOME}/.bash_history" >> "${filename}"
   "${EDITOR:-/usr/bin/vim}" "${filename}"
   git add "${filename}"
   pop_dir
 }
 
+publish_task () {
+  local taskname
+  local filename
+
+  taskname="${1}"
+  if is_empty "${taskname}"; then
+    usage
+    exit 0
+  fi
+  filename="jiff-${taskname}"
+  push_dir "${_JIFF_ROOT}/libexec"
+  git add "${filename}"
+  git commit --message "automated commit"
+  git push
+  pop_dir
+}
+
 usage () {
-  echo "Usage: jiff task add [task_name]"
+  echo "Usage: jiff task add|publish [task_name]"
 }
 
 subtask="${1:-}"
@@ -50,6 +67,9 @@ shift
 case "${subtask}" in
 "add" )
   add_task "${@}"
+  ;;
+"publish" )
+  publish_task "${@}"
   ;;
 * )
   usage
