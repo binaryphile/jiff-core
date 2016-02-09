@@ -2,7 +2,7 @@
 # Usage: jiff use [rhel-6|centos-6|ubuntu-14|ubuntu-15|auto|none]
 # Summary: Add platform-specific tasks from the named platform
 
-source commonlib
+source lib/bash
 
 strict_mode_on
 
