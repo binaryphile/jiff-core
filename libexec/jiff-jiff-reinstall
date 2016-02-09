@@ -2,7 +2,7 @@
 # Usage: jiff jiff-reinstall
 # Summary: Reinstall jiff
 
-source lib/bash
+source stdlib
 
 strict_mode_on
 # trace_on # for debugging while developing

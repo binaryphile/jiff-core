@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: jiff sample-task
+# Usage: jiff task
 # Summary: A sample task template
 # Help: Here is a more full explanation.
 # It can go multiple lines
@@ -11,7 +11,7 @@ source stdlib
 strict_mode_on
 # trace_on # for debugging while developing
 
-## Provide jiff completions
+# Provide jiff completions
 # if match "${1:-}" "--complete"; then
 #   cat <<EOM
 # --option-one

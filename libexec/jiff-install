@@ -2,9 +2,9 @@
 # Usage: jiff install [package]
 # Summary: Install and configure a system package
 
-source lib/bash
-source lib/jiff
-source lib/platform
+source stdlib
+source jifflib
+source platformlib
 
 strict_mode_on
 

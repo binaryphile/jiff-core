@@ -2,9 +2,9 @@
 # Usage: jiff reinstall [package]
 # Summary: Reinstall a system package
 
-source lib/bash
-source lib/jiff # jiff-specific functions
-source lib/platform # platform-specific functions
+source stdlib
+source jifflib # jiff-specific functions
+source platformlib # platform-specific functions
 
 strict_mode_on
 # trace_on # for debugging while developing

@@ -2,7 +2,7 @@
 # Usage: jiff basher [admin group (default: prodadm)]
 # Summary: Set up basher package manager
 
-source lib/bash
+source stdlib
 
 strict_mode_on
 
