@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Usage: jiff jiff-update
+# Summary: Update jiff
+
+source stdlib
+
+strict_mode_on
+# trace_on # for debugging while developing
+
+# TODO: read deps from package.sh
+basher upgrade binaryphile/bash-libs
+basher upgrade binaryphile/jiff-core
+push_dir "${_JIFF_ROOT}"
+git checkout -- .
+git fetch
+git reset --hard origin/master
+pop_dir
