@@ -10,7 +10,7 @@ _jiff() {
   word="${words[2]}"
 
   if [ "${#words}" -eq 2 ]; then
-    completions="$(jiff commands)"
+    completions="$(jiff tasks)"
   else
     completions="$(jiff completions "${word}")"
   fi

@@ -3,7 +3,7 @@ _jiff() {
   local word="${COMP_WORDS[COMP_CWORD]}"
 
   if [ "$COMP_CWORD" -eq 1 ]; then
-    COMPREPLY=( $(compgen -W "$(jiff commands)" -- "$word") )
+    COMPREPLY=( $(compgen -W "$(jiff tasks)" -- "$word") )
   else
     local command="${COMP_WORDS[1]}"
     local completions="$(jiff completions "$command")"
