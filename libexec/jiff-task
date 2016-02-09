@@ -33,6 +33,7 @@ add_task () {
     exit 1
   fi
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
+  sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
   ! shell_is_bash || tail -100 "${HOME}/.bash_history" >> "${filename}"
   pop_dir
   exec "${EDITOR:-/usr/bin/vim}" "${_JIFF_ROOT}/libexec/${filename}"
