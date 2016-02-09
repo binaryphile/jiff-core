@@ -21,9 +21,9 @@ strict_mode_on
 #   exit
 # fi
 
-usage () {
-  echo "Usage: jiff task --option-one [subtask]"
-}
+# usage () {
+#   echo "Usage: jiff task --option-one [subtask]"
+# }
 
 # subtask="${1:-}"
 

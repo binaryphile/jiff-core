@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# Usage: jiff task
-# Summary: A sample task template
-# Help: Here is a more full explanation.
-# It can go multiple lines
+# Usage: jiff task [new]
+# Summary: Manage jiff tasks
 
 source stdlib
 # source jifflib # jiff-specific functions
@@ -12,26 +10,42 @@ strict_mode_on
 # trace_on # for debugging while developing
 
 # Provide jiff completions
-# if match "${1:-}" "--complete"; then
-#   cat <<EOM
-# --option-one
-# --option-two
-# subtask
-# EOM
-#   exit
-# fi
+if match "${1:-}" "--complete"; then
+  cat <<EOM
+--option-one
+--option-two
+subtask
+EOM
+  exit
+fi
 
-usage () {
-  echo "Usage: jiff task --option-one [subtask]"
+new_task () {
+  local taskname
+  local filename
+
+  taskname="${1}"
+  [[ -n "${taskname}" ]] || usage && exit
+  filename="jiff-${taskname}"
+  push_dir "${_JIFF_ROOT}"
+  ! is_file "${filename}" || echoerr "Task already exists!" && exit 1
+  install -m 755 "${_JIFF_ROOT}/../share/jiff/jiff-sample-task" "${filename}"
+  ! shell_is_bash || tail -100 "${HOME}/.bash_history" >> "${filename}"
+  pop_dir
+  exec "${EDITOR}" "${_JIFF_ROOT}/${filename}"
 }
 
-# subtask="${1:-}"
+usage () {
+  echo "Usage: jiff task new [task_name]"
+}
 
-# case "${subtask}" in
-# "one" | "two" )
-#   do_something
-#   ;;
-# * )
-#   usage
-#   ;;
-# esac
+subtask="${1:-}"
+shift
+
+case "${subtask}" in
+"new" )
+  new_task "${@}"
+  ;;
+* )
+  usage
+  ;;
+esac
