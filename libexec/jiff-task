@@ -32,7 +32,7 @@ new_task () {
     echoerr "Task already exists!"
     exit 1
   fi
-  install -m 755 "${_JIFF_ROOT}/../share/jiff/jiff-sample-task" "${filename}"
+  install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   ! shell_is_bash || tail -100 "${HOME}/.bash_history" >> "${filename}"
   pop_dir
   exec "${EDITOR:-/usr/bin/vim}" "${_JIFF_ROOT}/${filename}"
