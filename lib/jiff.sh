@@ -2,7 +2,7 @@
 
 # Functions specific to jiff but not platform-specific
 
-source bash
+source lib/bash
 
 is_jiff_task () {
   is_file "${_JIFF_ROOT}/libexec/jiff-${1}"
