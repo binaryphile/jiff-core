@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source commonlib
+source bash
 
 exit_if_package_is_installed () {
   ! package_is_installed "${1}" || exit 0
