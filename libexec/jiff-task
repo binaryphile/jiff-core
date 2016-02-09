@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: jiff task [new]
+# Usage: jiff task [add]
 # Summary: Manage jiff tasks
 
 source stdlib
@@ -12,12 +12,12 @@ strict_mode_on
 # Provide jiff completions
 if match "${1:-}" "--complete"; then
   cat <<EOM
-new
+add
 EOM
   exit 0
 fi
 
-new_task () {
+add_task () {
   local taskname
   local filename
 
@@ -39,15 +39,15 @@ new_task () {
 }
 
 usage () {
-  echo "Usage: jiff task new [task_name]"
+  echo "Usage: jiff task add [task_name]"
 }
 
 subtask="${1:-}"
 shift
 
 case "${subtask}" in
-"new" )
-  new_task "${@}"
+"add" )
+  add_task "${@}"
   ;;
 * )
   usage
