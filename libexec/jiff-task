@@ -24,7 +24,10 @@ new_task () {
   local filename
 
   taskname="${1}"
-  [[ -n "${taskname}" ]] || usage && exit
+  if [[ -z "${taskname}" ]]; then
+    usage
+    exit
+  fi
   filename="jiff-${taskname}"
   push_dir "${_JIFF_ROOT}"
   ! is_file "${filename}" || echoerr "Task already exists!" && exit 1
