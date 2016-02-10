@@ -20,12 +20,14 @@ EDITOR="${EDITOR:-/usr/bin/vim}"
 add_task () {
   local taskname="${1:-}"
   local filename="jiff-${taskname}"
+  local task_dir="${_JIFF_ROOT}/libexec"
 
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  push_dir "${_JIFF_ROOT}/libexec"
+  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
+  push_dir "${task_dir}"
   if is_file "${filename}"; then
     echoerr "Task already exists!"
     exit 1
@@ -41,12 +43,14 @@ add_task () {
 publish_task () {
   local taskname="${1:-}"
   local filename="jiff-${taskname}"
+  local task_dir="${_JIFF_ROOT}/libexec"
 
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  push_dir "${_JIFF_ROOT}/libexec"
+  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
+  push_dir "${task_dir}"
   git add "${filename}"
   git commit --message "automated commit"
   git push
@@ -56,12 +60,14 @@ publish_task () {
 edit_task () {
   local taskname="${1:-}"
   local filename="jiff-${taskname}"
+  local task_dir="${_JIFF_ROOT}/libexec"
 
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  push_dir "${_JIFF_ROOT}/libexec"
+  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
+  push_dir "${task_dir}"
   "${EDITOR}" "${filename}"
   git add "${filename}"
   pop_dir
@@ -70,12 +76,14 @@ edit_task () {
 show_task () {
   local taskname="${1:-}"
   local filename="jiff-${taskname}"
+  local task_dir="${_JIFF_ROOT}/libexec"
 
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  cat "${_JIFF_ROOT}/libexec/${filename}"
+  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
+  cat "${task_dir}/${filename}"
 }
 
 usage () {
