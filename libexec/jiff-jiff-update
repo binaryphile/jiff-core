@@ -10,8 +10,10 @@ strict_mode on
 # TODO: read deps from package.sh
 basher upgrade binaryphile/bash-libs
 basher upgrade binaryphile/jiff-core
+jiff use none
 push_dir "${_JIFF_ROOT}"
 git checkout -- .
 git fetch
 git reset --hard origin/master
 pop_dir
+jiff use auto
