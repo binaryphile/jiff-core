@@ -12,7 +12,7 @@ strict_mode on
 # Provide jiff completions
 if match "${1:-}" "--complete"; then
   cat <<EOM
-  add
+add
 EOM
   exit 0
 fi
