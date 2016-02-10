@@ -12,5 +12,4 @@ strict_mode_on
 package="${1}"
 
 run_and_exit_if_is_jiff_task "${package}-reinstall"
-uninstall_package "${package}"
-install_package "${package}"
+reinstall_package "${package}"

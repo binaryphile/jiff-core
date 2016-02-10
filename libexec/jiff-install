@@ -10,5 +10,5 @@ strict_mode_on
 
 package="${1}"
 
-run_and_exit_if_is_jiff_task "${package}"
+run_and_exit_if_is_jiff_task "${package}-install"
 install_package "${package}"

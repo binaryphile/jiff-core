@@ -19,6 +19,15 @@ package_is_installed () {
   dpkg --get-selections "${1}" 2>/dev/null | grep -q "^${1}\\(:amd64\\)\\?[[:space:]]\\+install\$" >/dev/null
 }
 
+reinstall_package () {
+  local package
+
+  package="${1}"
+  ! package_is_installed "${package}" || return 0
+  uninstall_package "${package}"
+  install_package "${package}"
+}
+
 update_apt () {
   local apt_date
   local now_date
