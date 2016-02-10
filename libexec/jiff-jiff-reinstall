@@ -4,8 +4,8 @@
 
 source stdlib
 
-strict_mode_on
-# trace_on # for debugging while developing
+strict_mode on
+# trace on # for debugging while developing
 
 # TODO: make this read the deps file
 basher uninstall binaryphile/bash-libs

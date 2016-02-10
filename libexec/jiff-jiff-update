@@ -4,8 +4,8 @@
 
 source stdlib
 
-strict_mode_on
-# trace_on # for debugging while developing
+strict_mode on
+# trace on # for debugging while developing
 
 # TODO: read deps from package.sh
 basher upgrade binaryphile/bash-libs

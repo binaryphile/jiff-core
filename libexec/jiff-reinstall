@@ -6,8 +6,8 @@ source stdlib
 source jifflib # jiff-specific functions
 source platformlib # platform-specific functions
 
-strict_mode_on
-# trace_on # for debugging while developing
+strict_mode on
+# trace on # for debugging while developing
 
 package="${1}"
 

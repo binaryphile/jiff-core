@@ -6,7 +6,7 @@ source stdlib
 source jifflib
 source platformlib
 
-strict_mode_on
+strict_mode on
 
 package="${1}"
 
