@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-# Usage: jiff task add|edit|publish taskname
+# Usage: jiff task add|edit|publish|show taskname
 # Summary: Manage jiff tasks
 
 source stdlib
-# source jifflib # jiff-specific functions
-# source platformlib # platform-specific functions
 
 strict_mode on
 # trace on # for debugging while developing
@@ -20,15 +18,13 @@ fi
 EDITOR="${EDITOR:-/usr/bin/vim}"
 
 add_task () {
-  local taskname
-  local filename
+  local taskname="${1:-}"
+  local filename="jiff-${taskname}"
 
-  taskname="${1}"
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  filename="jiff-${taskname}"
   push_dir "${_JIFF_ROOT}/libexec"
   if is_file "${filename}"; then
     echoerr "Task already exists!"
@@ -43,15 +39,13 @@ add_task () {
 }
 
 publish_task () {
-  local taskname
-  local filename
+  local taskname="${1:-}"
+  local filename="jiff-${taskname}"
 
-  taskname="${1}"
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  filename="jiff-${taskname}"
   push_dir "${_JIFF_ROOT}/libexec"
   git add "${filename}"
   git commit --message "automated commit"
@@ -60,23 +54,32 @@ publish_task () {
 }
 
 edit_task () {
-  local taskname
-  local filename
+  local taskname="${1:-}"
+  local filename="jiff-${taskname}"
 
-  taskname="${1}"
   if is_empty "${taskname}"; then
     usage
     exit 0
   fi
-  filename="jiff-${taskname}"
   push_dir "${_JIFF_ROOT}/libexec"
   "${EDITOR}" "${filename}"
   git add "${filename}"
   pop_dir
 }
 
+show_task () {
+  local taskname="${1:-}"
+  local filename="jiff-${taskname}"
+
+  if is_empty "${taskname}"; then
+    usage
+    exit 0
+  fi
+  cat "${_JIFF_ROOT}/libexec/${filename}"
+}
+
 usage () {
-  echo "Usage: jiff task add|edit|publish taskname"
+  echo "Usage: jiff task add|edit|publish|show taskname"
 }
 
 subtask="${1:-}"
@@ -91,6 +94,9 @@ case "${subtask}" in
     ;;
   "edit" )
     edit_task "${@}"
+    ;;
+  "show" )
+    show_task "${@}"
     ;;
   * )
     usage
