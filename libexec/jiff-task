@@ -32,7 +32,7 @@ add_task () {
   fi
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
-  ! shell_is_bash || tail -50 "${HOME}/.bash_history" >> "${filename}"
+  ! shell_is_bash || ! is_file "${HOME}/.bash_history" || tail -50 "${HOME}/.bash_history" >> "${filename}"
   "${EDITOR}" "${filename}"
   git add "${filename}"
   pop_dir
