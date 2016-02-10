@@ -12,7 +12,7 @@ install_package () {
   package="${1}"
   ! package_is_installed "${package}" || return 0
   update_apt
-  sudo apt-get install -y "${package}"
+  sudo apt-get install "${package}"
 }
 
 package_is_installed () {
@@ -23,9 +23,16 @@ reinstall_package () {
   local package
 
   package="${1}"
-  ! package_is_installed "${package}" || return 0
   uninstall_package "${package}"
   install_package "${package}"
+}
+
+uninstall_package () {
+  local package
+
+  package="${1}"
+  package_is_installed "${package}" || return 0
+  sudo apt-get purge "${package}"
 }
 
 update_apt () {
