@@ -43,6 +43,7 @@ remove_links () {
 usage () {
   cat <<EOM
 Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
+
 Available contexts:
 
 $(ls "${_JIFF_ROOT}/context")
@@ -56,7 +57,10 @@ report_current () {
   else
     current=none
   fi
-  echo "Currently using: ${current}"
+  cat <<EOM
+Currently using: ${current}
+
+EOM
 }
 
 context="${1:-}"
