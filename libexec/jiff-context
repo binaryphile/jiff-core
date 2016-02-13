@@ -5,10 +5,13 @@
 source stdlib
 
 strict_mode on
+trace on
 
 LibExec="${_JIFF_ROOT}/libexec"
 LibLink="${_JIFF_ROOT}/lib/distrolib"
-CurrentLink="${LibExec}/context/current"
+AdminLink="${_JIFF_ROOT}/lib/adminlib"
+UserLink="${_JIFF_ROOT}/lib/userlib"
+CurrentLink="${_JIFF_ROOT}/context/current"
 
 available_contexts () {
   ls "${_JIFF_ROOT}/context"
@@ -36,8 +39,9 @@ remove_links () {
     link="$(base_name "${file}")"
     rm -f "${LibExec}/${link}"
   done
-  rm -f "${CurrentLink}"
-  rm -f "${LibLink}"
+  for link in "${CurrentLink}" "${LibLink}" "${AdminLink}" "${UserLink}"; do
+    rm -f "${link}"
+  done
 }
 
 usage () {
@@ -52,6 +56,8 @@ EOM
 }
 
 report_current () {
+  local current
+
   if is_link "${CurrentLink}"; then
     current="$(readlink "${CurrentLink}")"
   else
@@ -66,8 +72,17 @@ EOM
 context="${1:-}"
 distro="${2:-}"
 
-! is_empty "${context}" || usage && report_current && exit 0
-! match "${context}" "none" || remove_links && exit 0
+if is_empty "${context}"; then
+  usage
+  report_current
+  exit 0
+fi
+
+if match "${context}" "none"; then
+  remove_links
+  exit 0
+fi
+
 ! is_empty "${distro}" || distro="${detect_os}"
 
 case "${distro}" in
