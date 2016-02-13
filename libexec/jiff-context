@@ -21,7 +21,7 @@ make_links () {
   local link
 
   make_symlink "${CurrentLink}" "${context}/${distro}"
-  make_symlink "${LibLink}" "${distro}"
+  make_symlink "${LibLink}" "distro/${distro}"
   for file in ${CurrentLink}/jiff-*; do
     link="$(base_name "${file}")"
     make_symlink "${LibExec}/${link}" "${file}"
