@@ -5,7 +5,6 @@
 source stdlib
 
 strict_mode on
-trace on
 
 LibExec="${_JIFF_ROOT}/libexec"
 LibLink="${_JIFF_ROOT}/lib/distrolib"
