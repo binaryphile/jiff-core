@@ -86,7 +86,7 @@ fi
 
 case "${distro}" in
   "rhel-6" | "centos-6" | "ubuntu-14" | "ubuntu-15" )
-    make_links "${context}/${distro}"
+    make_links "${context}" "${distro}"
     ;;
   * )
     usage
