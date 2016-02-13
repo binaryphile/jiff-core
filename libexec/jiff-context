@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
+# Summary: Add tasks which presume an environment, user role and resource availability
+
+source stdlib
+
+strict_mode on
+
+LibExec="${_JIFF_ROOT}/libexec"
+LibLink="${_JIFF_ROOT}/lib/distrolib"
+CurrentLink="${LibExec}/context/current"
+
+available_contexts () {
+  ls "${_JIFF_ROOT}/context"
+}
+
+make_links () {
+  local context="${1}"
+  local distro="${2}"
+  local file
+  local link
+
+  make_symlink "${CurrentLink}" "${context}/${distro}"
+  make_symlink "${LibLink}" "${distro}"
+  for file in ${CurrentLink}/jiff-*; do
+    link="$(base_name "${file}")"
+    make_symlink "${LibExec}/${link}" "${file}"
+  done
+}
+
+remove_links () {
+  local file
+  local link
+
+  for file in ${CurrentLink}/jiff-*; do
+    link="$(base_name "${file}")"
+    rm -f "${LibExec}/${link}"
+  done
+  rm -f "${CurrentLink}"
+  rm -f "${LibLink}"
+}
+
+usage () {
+  cat <<EOM
+Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
+Available contexts:
+
+$(ls "${_JIFF_ROOT}/context")
+EOM
+}
+
+report_current () {
+  if is_link "${CurrentLink}"; then
+    current="$(readlink "${CurrentLink}")"
+  else
+    current=none
+  fi
+  echo "Currently using: ${current}"
+}
+
+context="${1:-}"
+distro="${2:-}"
+
+! is_empty "${context}" || usage && report_current && exit 0
+! match "${context}" "none" || remove_links && exit 0
+! is_empty "${distro}" || distro="${detect_os}"
+
+case "${distro}" in
+  "rhel-6" | "centos-6" | "ubuntu-14" | "ubuntu-15" )
+    make_links "${context}/${distro}"
+    ;;
+  * )
+    usage
+    exit 1
+    ;;
+esac
