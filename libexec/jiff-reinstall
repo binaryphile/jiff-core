@@ -4,10 +4,9 @@
 
 source stdlib
 source jifflib # jiff-specific functions
-source platformlib # platform-specific functions
+source distrolib # distribution-specific functions
 
 strict_mode on
-# trace on # for debugging while developing
 
 package="${1}"
 
