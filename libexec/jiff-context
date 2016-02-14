@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 # Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
-# Summary: Add tasks which presume an environment, user role and resource availability
+# Summary: Add tasks which presume an os distribution, user role and set of available resources
 
 source stdlib
 
 strict_mode on
 
 LibExec="${_JIFF_ROOT}/libexec"
-LibLink="${_JIFF_ROOT}/lib/distrolib"
-AdminLink="${_JIFF_ROOT}/lib/adminlib"
-UserLink="${_JIFF_ROOT}/lib/userlib"
-CurrentLink="${_JIFF_ROOT}/context/current"
+DistroLink="${_JIFF_ROOT}/lib/distrolib"
+RoleLink="${_JIFF_ROOT}/lib/rolelib"
+ContextLink="${_JIFF_ROOT}/context/current"
 
 available_contexts () {
   ls "${_JIFF_ROOT}/context"
@@ -22,11 +21,10 @@ make_links () {
   local file
   local link
 
-  make_symlink "${CurrentLink}" "${context}/${distro}"
-  make_symlink "${LibLink}" "../distro/${distro}/distrolib"
-  make_symlink "${AdminLink}" "../distro/${distro}/adminlib"
-  make_symlink "${UserLink}" "../distro/${distro}/userlib"
-  for file in ${CurrentLink}/jiff-*; do
+  make_symlink "${ContextLink}" "${context}/${distro}/role"
+  make_symlink "${DistroLink}" "../distro/${distro}/distrolib"
+  make_symlink "${RoleLink}" "../distro/${distro}/rolelib"
+  for file in ${ContextLink}/jiff-*; do
     link="$(base_name "${file}")"
     make_symlink "${LibExec}/${link}" "${file}"
   done
@@ -36,11 +34,11 @@ remove_links () {
   local file
   local link
 
-  for file in ${CurrentLink}/jiff-*; do
+  for file in ${DistroLink}/jiff-*; do
     link="$(base_name "${file}")"
     rm -f "${LibExec}/${link}"
   done
-  for link in "${CurrentLink}" "${LibLink}" "${AdminLink}" "${UserLink}"; do
+  for link in "${ContextLink}" "${DistroLink}" "${RoleLink}"; do
     rm -f "${link}"
   done
 }
@@ -59,8 +57,8 @@ EOM
 report_current () {
   local current
 
-  if is_link "${CurrentLink}"; then
-    current="$(readlink "${CurrentLink}")"
+  if is_link "${ContextLink}"; then
+    current="$(readlink "${ContextLink}")"
   else
     current=none
   fi
@@ -88,6 +86,7 @@ fi
 
 case "${distro}" in
   "rhel-6" | "centos-6" | "ubuntu-14" | "ubuntu-15" )
+    remove_links
     make_links "${context}" "${distro}"
     ;;
   * )
