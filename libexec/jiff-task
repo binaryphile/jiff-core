@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-# Usage: jiff task add|edit|publish|show taskname
+# Usage: jiff task add|edit|publish|show TASK
 # Summary: Manage jiff tasks
 
 source stdlib
 
-strict_mode on
-# trace on # for debugging while developing
+declare -r EDITOR="${EDITOR:-/usr/bin/vim}"
 
+echo_completions () {
 # Provide jiff completions
-if match "${1:-}" "--complete"; then
   cat <<EOM
 add
+edit
+publish
+show
 EOM
   exit 0
-fi
-
-EDITOR="${EDITOR:-/usr/bin/vim}"
+}
 
 add_task () {
   local taskname="${1:-}"
@@ -87,26 +87,36 @@ show_task () {
 }
 
 usage () {
-  echo "Usage: jiff task add|edit|publish|show taskname"
+  echo "Usage: jiff task add|edit|publish|show TASK"
 }
 
-subtask="${1:-}"
-shift
+main () {
+  local subtask="${1:-}"
+  shift
+  
+  case "${subtask}" in
+    "--complete" )
+      echo_completions
+      ;;
+    "add" )
+      add_task "${@}"
+      ;;
+    "publish" )
+      publish_task "${@}"
+      ;;
+    "edit" )
+      edit_task "${@}"
+      ;;
+    "show" )
+      show_task "${@}"
+      ;;
+    * )
+      usage
+      ;;
+  esac
+}
 
-case "${subtask}" in
-  "add" )
-    add_task "${@}"
-    ;;
-  "publish" )
-    publish_task "${@}"
-    ;;
-  "edit" )
-    edit_task "${@}"
-    ;;
-  "show" )
-    show_task "${@}"
-    ;;
-  * )
-    usage
-    ;;
-esac
+if ! script_is_sourced; then
+  strict_mode on
+  main "${@}"
+fi
