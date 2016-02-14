@@ -1,10 +1,48 @@
 #!/usr/bin/env bash
-# Usage: jiff task add|edit|publish|show TASK
+# Usage: jiff task add|edit|remove|publish|show TASK
 # Summary: Manage jiff tasks
 
 source stdlib
 
-declare -r EDITOR="${EDITOR:-/usr/bin/vim}"
+declare -r EDITOR="$(set_editor)"
+declare -r PAGER="$(set_pager)"
+
+main () {
+  local subtask="${1:-}"
+  shift
+  
+  case "${subtask}" in
+    "--complete" )
+      echo_completions
+      ;;
+    "add" )
+      git_task "add" "${@}"
+      ;;
+    "publish" )
+      git_task "publish" "${@}"
+      ;;
+    "edit" )
+      git_task "edit" "${@}"
+      ;;
+    "show" )
+      git_task "show" "${@}"
+      ;;
+    "remove" )
+      git_task "remove" "${@}"
+      ;;
+    * )
+      usage
+      ;;
+  esac
+}
+
+copy_sample_task () {
+  local filename="${1}"
+
+  install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
+  sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
+  ! shell_is_bash || ! is_file "${HOME}/.bash_history" || tail -50 "${HOME}/.bash_history" >> "${filename}"
+}
 
 echo_completions () {
 # Provide jiff completions
@@ -17,103 +55,76 @@ EOM
   exit 0
 }
 
-add_task () {
-  local taskname="${1:-}"
-  local filename="jiff-${taskname}"
-  local task_dir="${_JIFF_ROOT}/libexec"
+git_add_task () {
+  local filename="${1}"
 
-  if is_empty "${taskname}"; then
-    usage
-    exit 0
-  fi
-  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
-  push_dir "${task_dir}"
-  if is_file "${filename}"; then
-    echoerr "Task already exists!"
-    exit 1
-  fi
-  install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
-  sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
-  ! shell_is_bash || ! is_file "${HOME}/.bash_history" || tail -50 "${HOME}/.bash_history" >> "${filename}"
+  exit_if_is_file "${filename}"
+  copy_sample_task "${filename}"
   "${EDITOR}" "${filename}"
   git add "${filename}"
-  pop_dir
 }
 
-publish_task () {
-  local taskname="${1:-}"
-  local filename="jiff-${taskname}"
-  local task_dir="${_JIFF_ROOT}/libexec"
+git_edit_task () {
+  local filename="${1}"
 
-  if is_empty "${taskname}"; then
-    usage
-    exit 0
-  fi
-  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
-  push_dir "${task_dir}"
+  "${EDITOR}" "${filename}"
   git add "${filename}"
+}
+
+git_remove_task () {
+  local filename="${1}"
+
+  git rm "${filename}"
   git commit --message "automated commit"
   git push
-  pop_dir
 }
 
-edit_task () {
-  local taskname="${1:-}"
-  local filename="jiff-${taskname}"
-  local task_dir="${_JIFF_ROOT}/libexec"
+git_task () {
+  local kommand="${1}"
+  local taskname="${2}"
+  local context="${3:-}"
+  local filename="jiff-\${taskname}"
+  local task_dir="${_JIFF_ROOT}/libexec/context/current"
 
-  if is_empty "${taskname}"; then
-    usage
-    exit 0
-  fi
-  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
+  taskname_or_exit "${taskname}"
+  ! match "${context}" "role" || task_dir="${_JIFF_ROOT}/role/current"
+  ! match "${context}" "default" || task_dir="${_JIFF_ROOT}/libexec"
   push_dir "${task_dir}"
-  "${EDITOR}" "${filename}"
-  git add "${filename}"
+  case "${kommand}" in
+    "add" )
+      git_add_task "${filename}"
+      ;;
+    "edit" )
+      git_edit_task "${filename}"
+      ;;
+    "publish" )
+      git_publish_task "${filename}"
+      ;;
+    "remove" )
+      git_remove_task "${filename}"
+      ;;
+    "show" )
+      show_task "${filename}"
+      ;;
+  esac
   pop_dir
 }
 
 show_task () {
-  local taskname="${1:-}"
-  local filename="jiff-${taskname}"
-  local task_dir="${_JIFF_ROOT}/libexec"
+  local filename="${1}"
 
-  if is_empty "${taskname}"; then
+  "${PAGER}" "${filename}"
+}
+
+taskname_or_exit () {
+  if is_empty "${1}"; then
     usage
     exit 0
   fi
-  ! match "${2:-}" "platform" || task_dir="${_JIFF_ROOT}/libexec/platforms/current"
-  cat "${task_dir}/${filename}"
 }
 
 usage () {
-  echo "Usage: jiff task add|edit|publish|show TASK"
-}
-
-main () {
-  local subtask="${1:-}"
-  shift
-  
-  case "${subtask}" in
-    "--complete" )
-      echo_completions
-      ;;
-    "add" )
-      add_task "${@}"
-      ;;
-    "publish" )
-      publish_task "${@}"
-      ;;
-    "edit" )
-      edit_task "${@}"
-      ;;
-    "show" )
-      show_task "${@}"
-      ;;
-    * )
-      usage
-      ;;
-  esac
+  echo "Usage: jiff task add|edit|remove|publish|show TASK"
 }
 
 if ! script_is_sourced; then
