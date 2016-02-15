@@ -8,32 +8,25 @@ declare -r EDITOR="$(set_editor)"
 declare -r PAGER="$(set_pager)"
 
 main () {
-  local subtask="${1:-}"
-  shift
-  
-  case "${subtask}" in
+  case "${1:-}" in
     "--complete" )
       echo_completions
       ;;
-    "add" )
-      git_task "add" "${@}"
-      ;;
-    "publish" )
-      git_task "publish" "${@}"
-      ;;
-    "edit" )
-      git_task "edit" "${@}"
-      ;;
-    "show" )
-      git_task "show" "${@}"
-      ;;
-    "remove" )
-      git_task "remove" "${@}"
+    "add" | "publish" | "edit" | "show" | "remove" )
+      argument_or_exit "${2:-}"
+      execute_task "${@}"
       ;;
     * )
       usage
       ;;
   esac
+}
+
+argument_or_exit () {
+  if is_empty "${1}"; then
+    usage
+    exit 0
+  fi
 }
 
 copy_sample_task () {
@@ -50,9 +43,35 @@ echo_completions () {
 add
 edit
 publish
+remove
 show
 EOM
   exit 0
+}
+
+execute_task () {
+  local filename="jiff-${2}"
+  local task_dir="$(set_taskdir "${3:-}")"
+
+  push_dir "${task_dir}"
+  case "${1}" in
+    "add" )
+      git_add_task "${filename}"
+      ;;
+    "edit" )
+      git_edit_task "${filename}"
+      ;;
+    "publish" )
+      git_publish_task "${filename}"
+      ;;
+    "remove" )
+      git_remove_task "${filename}"
+      ;;
+    "show" )
+      "${PAGER}" "${filename}"
+      ;;
+  esac
+  pop_dir
 }
 
 git_add_task () {
@@ -72,55 +91,22 @@ git_edit_task () {
 }
 
 git_remove_task () {
-  local filename="${1}"
-
-  git rm "${filename}"
+  git rm "${1}"
   git commit --message "automated commit"
   git push
 }
 
-git_task () {
-  local kommand="${1}"
-  local taskname="${2}"
-  local context="${3:-}"
-  local filename="jiff-\${taskname}"
-  local task_dir="${_JIFF_ROOT}/libexec/context/current"
-
-  taskname_or_exit "${taskname}"
-  ! match "${context}" "role" || task_dir="${_JIFF_ROOT}/role/current"
-  ! match "${context}" "default" || task_dir="${_JIFF_ROOT}/libexec"
-  push_dir "${task_dir}"
-  case "${kommand}" in
-    "add" )
-      git_add_task "${filename}"
+set_taskdir () {
+  case "${1}" in
+    "role" )
+      echo "${_JIFF_ROOT}/role/current"
       ;;
-    "edit" )
-      git_edit_task "${filename}"
+    "default" )
+      echo "${_JIFF_ROOT}/libexec"
       ;;
-    "publish" )
-      git_publish_task "${filename}"
-      ;;
-    "remove" )
-      git_remove_task "${filename}"
-      ;;
-    "show" )
-      show_task "${filename}"
-      ;;
+    * )
+      echo "${_JIFF_ROOT}/context/current"
   esac
-  pop_dir
-}
-
-show_task () {
-  local filename="${1}"
-
-  "${PAGER}" "${filename}"
-}
-
-taskname_or_exit () {
-  if is_empty "${1}"; then
-    usage
-    exit 0
-  fi
 }
 
 usage () {
