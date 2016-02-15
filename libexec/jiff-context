@@ -34,7 +34,7 @@ remove_links () {
   local file
   local link
 
-  for file in ${DistroLink}/jiff-*; do
+  for file in ${ContextLink}/jiff-*; do
     link="$(base_name "${file}")"
     rm -f "${LibExec}/${link}"
   done
