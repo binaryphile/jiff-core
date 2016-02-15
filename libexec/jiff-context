@@ -25,6 +25,7 @@ make_links () {
   make_symlink "${DistroLink}" "../distro/${distro}/distro"
   make_symlink "${RoleLink}" "../distro/${distro}/role"
   for file in ${ContextLink}/jiff-*; do
+    match "${file}" "${ContextLink}/jiff-*" && continue
     link="$(base_name "${file}")"
     make_symlink "${LibExec}/${link}" "${file}"
   done
