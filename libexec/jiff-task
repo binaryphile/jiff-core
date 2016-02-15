@@ -33,7 +33,7 @@ copy_sample_task () {
   local filename="${1}"
 
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
-  sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
+  sed -i -e "s|jiff sample-task|jiff ${2}|" "${filename}"
   ! shell_is_bash || ! is_file "${HOME}/.bash_history" || tail -50 "${HOME}/.bash_history" >> "${filename}"
 }
 
@@ -50,13 +50,14 @@ EOM
 }
 
 execute_task () {
-  local filename="jiff-${2}"
+  local taskname="${2}"
+  local filename="jiff-${taskname}"
   local task_dir="$(set_taskdir "${3:-}")"
 
   push_dir "${task_dir}"
   case "${1}" in
     "add" )
-      git_add_task "${filename}"
+      git_add_task "${filename}" "${taskname}"
       ;;
     "edit" )
       git_edit_task "${filename}"
@@ -78,7 +79,7 @@ git_add_task () {
   local filename="${1}"
 
   exit_if_is_file "${filename}"
-  copy_sample_task "${filename}"
+  copy_sample_task "${filename}" "${2}"
   "${EDITOR}" "${filename}"
   git add "${filename}"
 }
