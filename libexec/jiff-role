@@ -4,7 +4,8 @@
 source stdlib
 
 main () {
-  local dirname="$(abs_dirname "${_JIFF_ROOT}/context/current/..")"
+  local dirname="$(abs_dirname "${_JIFF_ROOT}/context/current")"
+  dirname="$(abs_dirname "${dirname}/../")"
   make_symlink "${dirname}/role" "${1}"
 }
 
