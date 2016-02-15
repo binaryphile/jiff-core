@@ -91,6 +91,14 @@ git_edit_task () {
   git add "${filename}"
 }
 
+git_publish_task () {
+  local filename="${1}"
+
+  git add "${filename}"
+  git commit --message "automated commit"
+  git push
+}
+
 git_remove_task () {
   git rm "${1}"
   git commit --message "automated commit"

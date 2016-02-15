@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Usage: jiff role
+
+source stdlib
+
+main () {
+  make_symlink "${_JIFF_ROOT}/context/current/../role" "${1}"
+}
+
+return 2>/dev/null || true
+strict_mode on
+main "${@}"
