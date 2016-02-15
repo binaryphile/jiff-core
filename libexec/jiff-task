@@ -111,7 +111,7 @@ usage () {
   echo "Usage: jiff task add|edit|remove|publish|show TASK [default]"
 }
 
-if ! script_is_sourced; then
-  strict_mode on
-  main "${@}"
-fi
+return 2>/dev/null || true
+
+strict_mode on
+main "${@}"
