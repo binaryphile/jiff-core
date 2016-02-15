@@ -99,11 +99,8 @@ git_remove_task () {
 
 set_taskdir () {
   case "${1}" in
-    "role" )
-      echo "${_JIFF_ROOT}/role/current"
-      ;;
     "default" )
-      echo "${_JIFF_ROOT}/libexec"
+      echo "${_JIFF_ROOT}/role/current"
       ;;
     * )
       echo "${_JIFF_ROOT}/context/current"
@@ -111,7 +108,7 @@ set_taskdir () {
 }
 
 usage () {
-  echo "Usage: jiff task add|edit|remove|publish|show TASK"
+  echo "Usage: jiff task add|edit|remove|publish|show TASK [default]"
 }
 
 if ! script_is_sourced; then
