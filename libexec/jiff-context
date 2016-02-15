@@ -64,7 +64,6 @@ report_current () {
   fi
   cat <<EOM
 Currently using: ${current}
-
 EOM
 }
 
