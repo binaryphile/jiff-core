@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: jiff task add|edit|remove|publish|show TASK
+# Usage: jiff task add|edit|publish|remove|show TASK
 # Summary: Manage jiff tasks
 
 source stdlib
