@@ -4,8 +4,8 @@
 
 source stdlib
 
-declare -r EDITOR="$(set_editor)"
-declare -r PAGER="$(set_pager)"
+EDITOR="$(set_editor)"
+PAGER="$(set_pager)"
 
 main () {
   case "${1:-}" in
@@ -50,14 +50,18 @@ EOM
 }
 
 execute_task () {
-  local taskname="${2}"
-  local filename="jiff-${taskname}"
-  local task_dir="$(set_taskdir "${3:-}")"
+  local taskname
+  local filename
+  local task_dir
 
+  taskname="${2}"
+  filename="jiff-${taskname}"
+  task_dir="$(set_taskdir "${3:-}")"
   push_dir "${task_dir}"
   case "${1}" in
     "add" )
       git_add_task "${filename}" "${taskname}"
+      make_symlink "${_JIFF_ROOT}/libexec/${filename}" "../context/current/${filename}"
       ;;
     "edit" )
       git_edit_task "${filename}"
