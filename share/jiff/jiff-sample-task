@@ -14,7 +14,7 @@ source arraylib   #  array functions
 SubTasks=( $(available_subtasks) )
 
 main () {
-  local subtask="${1:-}"
+  local subtask
 
   if match "${1:-}" "--complete"; then
     provide_completions
