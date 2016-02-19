@@ -5,8 +5,6 @@
 source stdlib
 source arraylib
 
-strict_mode on
-
 LibExec="${_JIFF_ROOT}/libexec"
 DistroLink="${_JIFF_ROOT}/lib/distrolib"
 RoleLink="${_JIFF_ROOT}/lib/rolelib"
@@ -64,7 +62,7 @@ remove_links () {
   local file
   local link
 
-  for file in ${ContextLink}/jiff-*; do
+  for file in "${ContextLink}"/jiff-*; do
     link="$(base_name "${file}")"
     rm -f "${LibExec}/${link}"
   done
@@ -73,22 +71,11 @@ remove_links () {
   done
 }
 
-usage () {
-  cat <<EOM
-Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
-
-Available contexts:
-
-$(ls "${_JIFF_ROOT}/context")
-
-EOM
-}
-
 report_current () {
   local current
 
   if is_link "${ContextLink}"; then
-    current="$(readlink "${ContextLink}")"
+    current="$(readlink "${ContextLink}" | cut -d/ -f1)"
   else
     current=none
   fi
@@ -97,7 +84,17 @@ Currently using: ${current}
 EOM
 }
 
-return 2>/dev/null || true
+usage () {
+  cat <<EOM
+Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
 
+Available contexts:
+
+$(ls "${_JIFF_ROOT}/context" | grep -v current)
+
+EOM
+}
+
+return 2>/dev/null || true
 strict_mode on
 main "${@}"

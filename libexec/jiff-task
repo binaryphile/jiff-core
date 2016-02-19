@@ -120,6 +120,5 @@ usage () {
 }
 
 return 2>/dev/null || true
-
 strict_mode on
 main "${@}"

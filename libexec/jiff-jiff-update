@@ -4,9 +4,6 @@
 
 source stdlib
 
-strict_mode on
-# trace on # for debugging while developing
-
 # TODO: read deps from package.sh
 basher upgrade binaryphile/bash-libs
 basher upgrade binaryphile/jiff-core
@@ -18,3 +15,6 @@ git fetch
 git reset --hard origin/master
 jiff context "${current}"
 pop_dir
+
+return 2>/dev/null || true
+strict_mode on

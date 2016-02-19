@@ -8,7 +8,7 @@ strict_mode on
 # trace on # for debugging while developing
 
 # TODO: make this read the deps file
-current="$(jiff context | tail -1 | cut -d ":" -f2)"
+current="$(jiff context | tail -1 | cut -d " " -f3)" # TODO: make this read the link and maybe put in jifflib?
 basher uninstall binaryphile/bash-libs
 basher uninstall binaryphile/jiff-core
 # TODO: make this uninstall the user's jiff, not mine
