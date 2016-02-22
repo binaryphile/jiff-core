@@ -34,7 +34,10 @@ copy_sample_task () {
 
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   sed -i -e "s|jiff sample-task|jiff ${2}|" "${filename}"
-  ! shell_is_bash || ! is_file "${HOME}/.bash_history" || tail -50 "${HOME}/.bash_history" >> "${filename}"
+  if shell_is_bash && is_file "${HOME}/.bash_history"; then
+    echo "" >> "${filename}"
+    tail -50 "${HOME}/.bash_history" >> "${filename}"
+  fi
 }
 
 echo_completions () {
