@@ -6,23 +6,22 @@
 
 source stdlib
 source arraylib   #  array functions
+# source stringlib  #  string functions
 # source jifflib    #  jiff-specific functions
 # source distrolib  #  linux distribution-specific functions
-# source stringlib  #  string functions
 # source rolelib    #  role-specific functions
 
-SubTasks=( $(available_subtasks) )
 
 main () {
-  local subtask
+  local subtasks
 
   if match "${1:-}" "--complete"; then
     provide_completions
     exit 0
   fi
 
-  subtask="${1:-}"
-  if array_contains "${subtask}" "${SubTasks[@]}"; then
+  subtasks=( $(available_subtasks) )
+  if array_contains "${1:-}" "${subtasks[@]}"; then
     do_subtasks "${@}"
     exit 0
   fi
@@ -40,6 +39,7 @@ EOM
 
 do_subtasks () {
   local subtask
+
   subtask="${1:-}"
   shift
 
