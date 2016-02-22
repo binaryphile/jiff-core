@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Usage: jiff config [package]
+# Summary: Configure a software package
+
+source stdlib
+source jifflib
+
+main () {
+  run_and_exit_if_is_jiff_task "${1:-}-config"
+}
+
+return 2>/dev/null || true
+strict_mode on
+main "${@}"

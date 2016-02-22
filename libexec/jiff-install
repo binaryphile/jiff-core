@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 # Usage: jiff install [package]
-# Summary: Install and configure a system package
+# Summary: Install and possibly configure system package
 
 source stdlib
 source jifflib
 source distrolib
 
+main () {
+  package="${1:-}"
+  if [[ is_empty "${package}" ]]; then
+    usage
+    exit 1
+  fi
+  run_and_exit_if_is_jiff_task "${package}-install"
+  install_package "${package}"
+}
+
+usage () {
+  echo "Usage: jiff install PACKAGE"
+}
+
+return 2>/dev/null || true
 strict_mode on
-
-package="${1}"
-
-run_and_exit_if_is_jiff_task "${package}-install"
-install_package "${package}"
+main "${@}"
