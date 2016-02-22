@@ -8,7 +8,7 @@ source distrolib
 
 main () {
   package="${1:-}"
-  if [[ is_empty "${package}" ]]; then
+  if is_empty "${package}"; then
     usage
     exit 1
   fi
