@@ -1,0 +1,22 @@
+#!/usr/bin/env python2
+
+import pytoml as toml
+import sys, os
+
+def main(argv):
+    filename = os.path.join(os.path.dirname(__file__), "../context.toml")
+    with open(filename, "rb") as contextfile:
+        contexts = toml.load(contextfile)
+    contexts = contexts['context']
+
+    if argv[0] == "context":
+        hostname = argv[1]
+        for key in contexts:
+            if hostname in contexts[key]:
+                print key
+                break
+    elif argv[0] == "hosts":
+        print " ".join(contexts[argv[1]])
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
