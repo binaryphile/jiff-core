@@ -4,8 +4,11 @@
 
 source stdlib
 
+RoleDirectory="${RoleDirectory:-${_JIFF_ROOT}/role/current}"
+LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
+
 is_jiff_task () {
-  is_file "${_JIFF_ROOT}/libexec/jiff-${1}"
+  is_file "${LibExecDirectory}/jiff-${1}"
 }
 
 run_and_exit_if_is_jiff_task () {
@@ -24,4 +27,12 @@ run_if_is_jiff_task () {
   else
      return 1
   fi
+}
+
+make_rolelinks () {
+  for file in "${RoleDirectory}"/jiff-*; do
+    match "${file}" "${RoleDirectory}/jiff-*" && continue
+    link="$(base_name "${file}")"
+    make_symlink "${LibExec}/${link}" "${file}"
+  done
 }
