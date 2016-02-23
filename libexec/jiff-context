@@ -57,7 +57,7 @@ make_links () {
   context="${1}"
   distro="${2}"
   make_symlink "${ContextLink}" "${context}/${distro}/role"
-  make_symlink "${DistroLink}" "../distro/${distro}/distro"
+  make_symlink "${DistroLink}" "../distro/${distro}/distrolib"
   make_symlink "${RoleLink}" "../distro/${distro}/role"
   for file in ${ContextLink}/jiff-*; do
     match "${file}" "${ContextLink}/jiff-*" && continue
