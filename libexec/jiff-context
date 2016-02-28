@@ -6,11 +6,11 @@ source stdlib
 source arraylib
 source jifflib
 
-LibExec="${_JIFF_ROOT}/libexec"
-DistroLink="${_JIFF_ROOT}/lib/distrolib"
-RoleLink="${_JIFF_ROOT}/lib/rolelib"
-ContextLink="${_JIFF_ROOT}/context/current"
-RoleDirectory="${_JIFF_ROOT}/role/current"
+LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
+DistroLibLink="${DistroLibLink:-${_JIFF_ROOT}/lib/distrolib}"
+RoleLibLink="${RoleLibLink:-${_JIFF_ROOT}/lib/rolelib}"
+ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
+RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
 
 main () {
   local context
@@ -52,30 +52,38 @@ Distros=( $(available_distros) )
 make_links () {
   local context
   local distro
+  local role
   local file
   local link
 
   context="${1}"
   distro="${2}"
-  make_symlink "${ContextLink}" "${context}/${distro}/role"
-  make_symlink "${DistroLink}" "../distro/${distro}/distrolib"
-  make_symlink "${RoleLink}" "../distro/${distro}/role"
+  role="$(readlink "${RoleLink}")"
+  make_symlink "${ContextLink}" "${context}/${distro}/${role}"
+  make_symlink "${DistroLibLink}" "../distro/${distro}/distrolib"
+  make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
   for file in "${ContextLink}"/jiff-*; do
     match "${file}" "${ContextLink}/jiff-*" && continue
     link="$(base_name "${file}")"
-    make_symlink "${LibExec}/${link}" "${file}"
+    make_symlink "${LibExecDirectory}/${link}" "${file}"
   done
 }
 
 remove_links () {
   local file
   local link
+  local links
 
   for file in "${ContextLink}"/jiff-*; do
     link="$(base_name "${file}")"
-    rm -f "${LibExec}/${link}"
+    rm -f "${LibExecDirectory}/${link}"
   done
-  for link in "${ContextLink}" "${DistroLink}" "${RoleLink}"; do
+  read -d "" -a links <<EOM || true
+${ContextLink}
+${DistroLibLink}
+${RoleLibLink}
+EOM
+  for link in "${links[@]}"; do
     rm -f "${link}"
   done
   make_rolelinks
