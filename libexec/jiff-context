@@ -33,9 +33,6 @@ main () {
     make_links "${context}" "${distro}"
     exit 0
   fi
-
-  usage
-  exit 1
 }
 
 available_contexts () {
