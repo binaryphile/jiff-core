@@ -81,6 +81,7 @@ Usage: jiff role ROLE
 Available roles:
 
 $(available_roles)
+
 EOM
 }
 
