@@ -18,7 +18,7 @@ main () {
   hostname="$(hostname)"
   for context in "${contexts[@]}"; do
     hosts=( jiff _data -g "hosts.${context}" )
-    if array_contains "${hostname}" "$hosts[@]"; then
+    if ary_contains "${hostname}" "$hosts[@]"; then
       jiff context "${context}"
     fi
   done

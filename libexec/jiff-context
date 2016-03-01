@@ -8,7 +8,6 @@ source jifflib
 
 LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
 DistroLink="${DistroLink:-${_JIFF_ROOT}/distro/current}"
-DistroLibLink="${DistroLibLink:-${_JIFF_ROOT}/lib/distrolib}"
 RoleLibLink="${RoleLibLink:-${_JIFF_ROOT}/lib/rolelib}"
 ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
 RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
@@ -32,7 +31,7 @@ main () {
   fi
   distros=( $(available_distros) )
   is_not_empty "${distro}" || distro="$(detect_os)"
-  if array_contains "${distro}" "${distros[@]}"; then
+  if ary_contains "${distro}" "${distros[@]}"; then
     remove_links
     make_rolelinks
     make_links "${context}" "${distro}"
@@ -58,11 +57,10 @@ make_links () {
 
   context="${1}"
   distro="${2}"
-  is_file "${RoleLink}" || jiff role admin
+  is_link "${RoleLink}" || jiff role admin
   role="$(readlink "${RoleLink}")"
   make_symlink "${ContextLink}" "${context}/${distro}/${role}"
   make_symlink "${DistroLink}" "${distro}"
-  make_symlink "${DistroLibLink}" "../distro/${distro}/distrolib"
   make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
   for file in "${ContextLink}"/jiff-*; do
     match "${file}" "${ContextLink}/jiff-*" && continue
@@ -83,7 +81,6 @@ remove_links () {
   read -d "" -a links <<EOM || true
 ${ContextLink}
 ${DistroLink}
-${DistroLibLink}
 ${RoleLibLink}
 EOM
   for link in "${links[@]}"; do
@@ -95,7 +92,7 @@ report_current () {
   local current
 
   if is_link "${ContextLink}"; then
-    current="$(readlink "${ContextLink}" | cut -d/ -f1)"
+    current=$(current_context)
   else
     current=none
   fi

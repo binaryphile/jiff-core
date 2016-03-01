@@ -3,10 +3,32 @@
 # Functions specific to jiff but not platform-specific
 
 source stdlib
+source stringlib
+source arraylib
 
 RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
 LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
 ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
+
+current_context () {
+  local context
+
+  context="$( readlink "${ContextLink}" )"
+  context=( $(str_split "/" "${context}") )
+  context=( $(ary_slice "0" $((${#context[@]}-3)) "${context[@]}") )
+  context="$(ary_join "/" "${context[@]}")"
+  echo "${context}"
+}
+
+context_less_role () {
+  local context
+
+  context="$( readlink "${ContextLink}" )"
+  context=( $(str_split "/" "${context}") )
+  context=( $(ary_slice "0" $((${#context[@]}-2)) "${context[@]}") )
+  context="$(ary_join "/" "${context[@]}")"
+  echo "${context}"
+}
 
 is_jiff_task () {
   is_file "${LibExecDirectory}/jiff-${1}"

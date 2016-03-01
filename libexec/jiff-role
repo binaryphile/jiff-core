@@ -26,13 +26,8 @@ main () {
     exit 0
   fi
   make_symlink "${RoleLink}" "${role}"
-  if is_file "${ContextLink}"; then
-    context="$( readlink "${_JIFF_ROOT}/context/current" )"
-    context=( str_split "/" "${context}" )
-    unset context[${#context}-1]
-    unset context[0]
-    context="$(array_join "/" "${context[@]}")"
-    jiff context "${context}"
+  if is_link "${ContextLink}"; then
+    jiff context "$(current_context)"
   else
     make_rolelinks
   fi
