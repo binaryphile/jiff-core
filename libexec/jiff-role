@@ -3,12 +3,15 @@
 
 source stdlib
 source jifflib
+source arraylib
+source stringlib
 
-RoleLink="${_JIFF_ROOT}/role/current"
+RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
+ConextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
 
 main () {
-  local dirname
   local role
+  local context
 
   role="${1:-}"
   if is_empty "${role}"; then
@@ -16,10 +19,17 @@ main () {
     report_current
     exit 0
   fi
-  dirname="$(abs_dirname "${_JIFF_ROOT}/context/current")"
-  dirname="$(abs_dirname "${dirname}/../")"
-  make_symlink "${dirname}/role" "${role}"
-  make_rolelinks
+  make_symlink "${RoleLink}" "${role}"
+  if is_file "${ContextLink}"; then
+    context="$( readlink "${_JIFF_ROOT}/context/current" )"
+    context=( str_split "/" "${context}" )
+    unset context["${#context}"-1]
+    unset context[0]
+    context="$(array_join "/" "${context[@]}")"
+    jiff context "${context}"
+  else
+    make_rolelinks
+  fi
 }
 
 available_roles () {

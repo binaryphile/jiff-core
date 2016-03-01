@@ -4,7 +4,7 @@ import pytoml as toml
 import sys, os
 
 def main(argv):
-    filename = os.path.join(os.path.dirname(__file__), "../data.toml")
+    filename = os.path.join(os.path.dirname(__file__), "../context/current/data.toml")
     with open(filename, "rb") as datafile:
         contents = toml.load(datafile)
     branches = argv[0].split(".")

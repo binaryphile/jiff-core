@@ -15,6 +15,7 @@ RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
 main () {
   local context
   local distro
+  local distros
 
   context="${1:-}"
   distro="${2:-}"
@@ -27,8 +28,9 @@ main () {
     remove_links
     exit 0
   fi
+  distros=( $(available_distros) )
   is_not_empty "${distro}" || distro="$(detect_os)"
-  if array_contains "${distro}" "${Distros[@]}"; then
+  if array_contains "${distro}" "${distros[@]}"; then
     remove_links
     make_links "${context}" "${distro}"
     exit 0
@@ -44,25 +46,24 @@ available_distros () {
   ls "${_JIFF_ROOT}/distro"
 }
 
-Distros=( $(available_distros) )
-
 make_links () {
   local context
   local distro
   local role
   local file
-  local link
+  local task
 
   context="${1}"
   distro="${2}"
+  is_file "${RoleLink}" || jiff role admin
   role="$(readlink "${RoleLink}")"
   make_symlink "${ContextLink}" "${context}/${distro}/${role}"
   make_symlink "${DistroLibLink}" "../distro/${distro}/distrolib"
   make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
   for file in "${ContextLink}"/jiff-*; do
     match "${file}" "${ContextLink}/jiff-*" && continue
-    link="$(base_name "${file}")"
-    make_symlink "${LibExecDirectory}/${link}" "${file}"
+    task="$(base_name "${file}")"
+    make_symlink "${LibExecDirectory}/${task}" "${file}"
   done
 }
 

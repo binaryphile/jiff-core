@@ -4,9 +4,9 @@
 
 source stdlib
 
-RoleDirectory="${RoleDirectory:-${_JIFF_ROOT}/role/current}"
+RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
 LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
-ContextDirectory="${ContextDirectory:-${_JIFF_ROOT}/context/current}"
+ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
 
 is_jiff_task () {
   is_file "${LibExecDirectory}/jiff-${1}"
@@ -25,15 +25,16 @@ run_if_is_jiff_task () {
   task="${1}"
   if is_jiff_task "${task}"; then
     jiff "${task}"
-  else
-     return 1
   fi
 }
 
 make_rolelinks () {
-  for file in "${RoleDirectory}"/jiff-*; do
-    match "${file}" "${RoleDirectory}/jiff-*" && continue
-    link="$(base_name "${file}")"
-    make_symlink "${LibExecDirectory}/${link}" "${file}"
+  local task
+  local file
+
+  for file in "${RoleLink}"/jiff-*; do
+    match "${file}" "${RoleLink}/jiff-*" && continue
+    task="$(base_name "${file}")"
+    make_symlink "${LibExecDirectory}/${task}" "${file}"
   done
 }
