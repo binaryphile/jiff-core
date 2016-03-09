@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Usage: jiff sample-task
+# Summary: A sample task template
+# Help: Here is a more full explanation.
+# It can go multiple lines
+
+source stdlib
+source arraylib   #  array functions
+# source stringlib  #  string functions
+# source jifflib    #  jiff-specific functions
+# source distrolib  #  linux distribution-specific functions
+# source rolelib    #  role-specific functions
+
+
+main () {
+  local subtasks
+
+  if match "${1:-}" "--complete"; then
+    provide_completions
+    exit 0
+  fi
+
+  subtasks=( $(available_subtasks) )
+  if array_contains "${1:-}" "${subtasks[@]}"; then
+    do_subtasks "${@}"
+    exit 0
+  fi
+
+  usage
+  exit 1
+}
+
+available_subtasks () {
+  cat <<EOM
+taskone
+tasktwo
+EOM
+}
+
+do_subtasks () {
+  local subtask
+
+  subtask="${1:-}"
+  shift
+
+  # if match "${subtask}" "taskone"; then
+  #   do_taskone "${@}"
+  #   exit 0
+  # fi
+  #
+  #  - or -
+  #
+  # case "${subtask}" in
+  #   "taskone" | "tasktwo" )
+  #     do_task "${@}"
+  #     ;;
+  #   * )
+  #     something
+  #     ;;
+  # esac
+}
+
+provide_completions () {
+  cat <<EOM
+--option-one
+--option-two
+$(available_subtasks)
+EOM
+}
+
+usage () {
+  echo "Usage: jiff task --option-one [subtask]"
+}
+
+return 0 2>/dev/null || true
+strict_mode on
+run_in_directory "${HOME}/tmp" "main" "${@}"
