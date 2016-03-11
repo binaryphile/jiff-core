@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Usage: jiff task-add
+
+source stdlib
+
+set_default  "WorkingDir"  "${HOME}/tmp"
+set_default  "EDITOR"      "/usr/bin/vim"
+
+main () {
+  local taskname
+  local filename
+  local task_dir
+
+  taskname="${2:-}"
+  exit_if_is_empty "${taskname}"
+  filename="jiff-${taskname}"
+  task_dir="$(set_taskdir "${3:-}")"
+  cd "${task_dir}"
+  add_task "${filename}" "${taskname}"
+  cd "${_JIFF_ROOT}/libexec"
+  make_symlink "${filename}" "../context/current/${filename}"
+}
+
+add_task () {
+  local filename
+
+  filename="${1}"
+  exit_if_is_file "${filename}"
+  copy_sample_task "${filename}" "${2}"
+  "${EDITOR}" "${filename}"
+  git add "${filename}"
+}
+
+copy_sample_task () {
+  local filename="${1}"
+
+  install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
+  sed -i -e "s|jiff sample-task|jiff ${2}|" "${filename}"
+  if shell_is_bash && is_file "${HOME}/.bash_history"; then
+    echo "" >> "${filename}"
+    tail -50 "${HOME}/.bash_history" >> "${filename}"
+  fi
+}
+
+set_taskdir () {
+  case "${1}" in
+    "default" )
+      echo "${_JIFF_ROOT}/role/current"
+      ;;
+    * )
+      echo "${_JIFF_ROOT}/context/current"
+  esac
+}
+
+return 0 2>/dev/null || true
+strict_mode on
+run_in_directory "${WorkingDir}" "main" "${@}"

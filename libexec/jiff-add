@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Usage: jiff add TASK
+# Summary: "Add" verb for tasks
+
+source stdlib
+source jifflib
+
+set_default "WorkingDir" "${HOME}/tmp"
+
+main () {
+  local task
+
+  task="${1:-}"
+  if is_empty "${task}"; then
+    usage
+    exit 1
+  fi
+  run_and_exit_if_is_jiff_task "${task}-add"
+}
+
+usage () {
+  echo "Usage: jiff add TASK"
+}
+
+return 0 2>/dev/null || true
+strict_mode on
+run_in_directory "${WorkingDir}" "main" "${@}"
