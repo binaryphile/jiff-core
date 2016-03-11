@@ -11,6 +11,7 @@ source arraylib   #  array functions
 # source distrolib  #  linux distribution-specific functions
 # source rolelib    #  role-specific functions
 
+set_default "WorkingDir" "${HOME}/tmp"
 
 main () {
   local subtasks
@@ -74,4 +75,4 @@ usage () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${HOME}/tmp" "main" "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"
