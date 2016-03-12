@@ -3,8 +3,9 @@
 source stdlib
 source arraylib
 
-RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
-ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
+declare -r WorkingDir="${HOME}/tmp"
+declare -r RoleLink="${_JIFF_ROOT}/role/current"
+declare -r ContextLink="${_JIFF_ROOT}/context/current"
 
 main () {
   local context
@@ -24,6 +25,6 @@ main () {
   done
 }
 
-return 2>/dev/null || true
+return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"

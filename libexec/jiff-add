@@ -5,7 +5,7 @@
 source stdlib
 source jifflib
 
-set_default "WorkingDir" "${HOME}/tmp"
+declare -r WorkingDir="${HOME}/tmp"
 
 main () {
   local task

@@ -6,11 +6,12 @@ source stdlib
 source arraylib
 source jifflib
 
-LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
-DistroLink="${DistroLink:-${_JIFF_ROOT}/distro/current}"
-RoleLibLink="${RoleLibLink:-${_JIFF_ROOT}/lib/rolelib}"
-ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
-RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
+declare -r LibExecDir="${_JIFF_ROOT}/libexec"
+declare -r DistroLink="${_JIFF_ROOT}/distro/current"
+declare -r RoleLibLink="${_JIFF_ROOT}/lib/rolelib"
+declare -r ContextLink="${_JIFF_ROOT}/context/current"
+declare -r RoleLink="${_JIFF_ROOT}/role/current"
+declare -r WorkingDir="${HOME}/tmp"
 
 main () {
   local context
@@ -65,7 +66,7 @@ make_links () {
   for file in "${ContextLink}"/jiff-*; do
     match "${file}" "${ContextLink}/jiff-*" && continue
     task="$(base_name "${file}")"
-    make_symlink "${LibExecDirectory}/${task}" "${file}"
+    make_symlink "${LibExecDir}/${task}" "${file}"
   done
 }
 
@@ -76,7 +77,7 @@ remove_links () {
 
   for file in "${ContextLink}"/jiff-*; do
     link="$(base_name "${file}")"
-    rm -f "${LibExecDirectory}/${link}"
+    rm -f "${LibExecDir}/${link}"
   done
   read -d "" -a links <<EOM || true
 ${ContextLink}
@@ -113,6 +114,6 @@ $(available_contexts)
 EOM
 }
 
-return 2>/dev/null || true
+return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"

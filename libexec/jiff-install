@@ -6,6 +6,8 @@ source stdlib
 source jifflib
 source distrolib
 
+declare -r WorkingDir="${HOME}/tmp"
+
 main () {
   package="${1:-}"
   if is_empty "${package}"; then
@@ -20,6 +22,6 @@ usage () {
   echo "Usage: jiff install PACKAGE"
 }
 
-return 2>/dev/null || true
+return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"

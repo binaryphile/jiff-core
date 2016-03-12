@@ -3,12 +3,19 @@
 # Summary: Reinstall a system package
 
 source stdlib
-source jifflib # jiff-specific functions
-source distrolib # distribution-specific functions
+source jifflib
+source distrolib
 
+declare -r WorkingDir="${HOME}/tmp"
+
+main () {
+  local package
+
+  package="${1}"
+  run_and_exit_if_is_jiff_task "${package}-reinstall"
+  reinstall_package "${package}"
+}
+
+return 0 2>/dev/null || true
 strict_mode on
-
-package="${1}"
-
-run_and_exit_if_is_jiff_task "${package}-reinstall"
-reinstall_package "${package}"
+run_in_directory "${WorkingDir}" "main" "${@}"

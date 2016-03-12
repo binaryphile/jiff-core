@@ -3,8 +3,8 @@
 
 source stdlib
 
-set_default  "WorkingDir"  "${HOME}/tmp"
-set_default  "EDITOR"      "/usr/bin/vim"
+declare -r WorkingDir="${HOME}/tmp"
+set_default "EDITOR" "/usr/bin/vim"
 
 main () {
   local taskname

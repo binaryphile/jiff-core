@@ -6,9 +6,10 @@ source jifflib
 source arraylib
 source stringlib
 
-LibExecDirectory="${LibExecDirectory:-${_JIFF_ROOT}/libexec}"
-ContextLink="${ContextLink:-${_JIFF_ROOT}/context/current}"
-RoleLink="${RoleLink:-${_JIFF_ROOT}/role/current}"
+declare -r LibExecDir="${_JIFF_ROOT}/libexec"
+declare -r ContextLink="${_JIFF_ROOT}/context/current"
+declare -r RoleLink="${_JIFF_ROOT}/role/current"
+declare -r WorkingDir="${LibExecDir}"
 
 main () {
   local role
@@ -45,7 +46,7 @@ remove_links () {
 
   for file in "${RoleLink}"/jiff-*; do
     link="$(base_name "${file}")"
-    rm -f "${LibExecDirectory}/${link}"
+    rm -f "${LibExecDir}/${link}"
   done
   read -d "" -a links <<EOM || true
 ${RoleLink}
@@ -80,6 +81,6 @@ $(available_roles)
 EOM
 }
 
-return 2>/dev/null || true
+return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"

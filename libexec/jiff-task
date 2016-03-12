@@ -4,8 +4,9 @@
 
 source stdlib
 
-EDITOR="$(set_editor)"
-PAGER="$(set_pager)"
+set_default "EDITOR" "/usr/bin/vim"
+set_default "PAGER" "/usr/bin/less"
+declare -r WorkingDir="${HOME}/tmp"
 
 main () {
   case "${1:-}" in
@@ -126,6 +127,6 @@ usage () {
   echo "Usage: jiff task add|edit|remove|publish|show TASK [default]"
 }
 
-return 2>/dev/null || true
+return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"

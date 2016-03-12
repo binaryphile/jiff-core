@@ -5,10 +5,12 @@
 source stdlib
 source jifflib
 
+declare -r WorkingDir="${HOME}/tmp"
+
 main () {
   run_and_exit_if_is_jiff_task "${1:-}-config"
 }
 
-return 2>/dev/null || true
+return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+run_in_directory "${WorkingDir}" "main" "${@}"
