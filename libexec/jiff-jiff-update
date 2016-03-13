@@ -4,13 +4,12 @@
 
 source stdlib
 
-declare -r WorkingDir="${_JIFF_ROOT}"
-
 # TODO: read deps from package.sh
 main () {
   basher upgrade binaryphile/bash-libs
   basher upgrade binaryphile/jiff-core
   current="$(jiff context | tail -1 | cut -d " " -f3)"
+  cd "${_JIFF_ROOT}"
   jiff context none
   git checkout -- .
   git fetch
@@ -20,4 +19,4 @@ main () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

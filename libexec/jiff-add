@@ -5,8 +5,6 @@
 source stdlib
 source jifflib
 
-declare -r WorkingDir="${HOME}/tmp"
-
 main () {
   local task
 
@@ -24,4 +22,4 @@ usage () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

@@ -11,7 +11,6 @@ declare -r DistroLink="${_JIFF_ROOT}/distro/current"
 declare -r RoleLibLink="${_JIFF_ROOT}/lib/rolelib"
 declare -r ContextLink="${_JIFF_ROOT}/context/current"
 declare -r RoleLink="${_JIFF_ROOT}/role/current"
-declare -r WorkingDir="${HOME}/tmp"
 
 main () {
   local context
@@ -116,4 +115,4 @@ EOM
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

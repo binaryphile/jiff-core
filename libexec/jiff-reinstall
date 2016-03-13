@@ -6,8 +6,6 @@ source stdlib
 source jifflib
 source distrolib
 
-declare -r WorkingDir="${HOME}/tmp"
-
 main () {
   local package
 
@@ -18,4 +16,4 @@ main () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

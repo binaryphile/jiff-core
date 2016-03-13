@@ -6,17 +6,14 @@ source stdlib
 source jifflib
 source distrolib
 
-declare -r WorkingDir="${HOME}/tmp"
-
 main () {
   local package
 
   package="${1}"
-
   run_and_exit_if_is_jiff_task "${package}-update"
   update_package "${package}"
 }
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

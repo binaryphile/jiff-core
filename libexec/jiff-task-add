@@ -3,7 +3,6 @@
 
 source stdlib
 
-declare -r WorkingDir="${HOME}/tmp"
 set_default "EDITOR" "/usr/bin/vim"
 
 main () {
@@ -54,4 +53,4 @@ set_taskdir () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

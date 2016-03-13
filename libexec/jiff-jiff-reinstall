@@ -4,8 +4,6 @@
 
 source stdlib
 
-declare -r WorkingDir="${HOME}/tmp"
-
 main () {
   # TODO: make this read the deps file
   current="$(jiff context | tail -1 | cut -d " " -f3)" # TODO: make this read the link and maybe put in jifflib?
@@ -20,4 +18,4 @@ main () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

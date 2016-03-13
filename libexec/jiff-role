@@ -9,7 +9,6 @@ source stringlib
 declare -r LibExecDir="${_JIFF_ROOT}/libexec"
 declare -r ContextLink="${_JIFF_ROOT}/context/current"
 declare -r RoleLink="${_JIFF_ROOT}/role/current"
-declare -r WorkingDir="${LibExecDir}"
 
 main () {
   local role
@@ -83,4 +82,4 @@ EOM
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"

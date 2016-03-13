@@ -4,9 +4,8 @@
 
 source stdlib
 
-set_default "EDITOR" "/usr/bin/vim"
-set_default "PAGER" "/usr/bin/less"
-declare -r WorkingDir="${HOME}/tmp"
+set_default  "EDITOR"  "/usr/bin/vim"
+set_default  "PAGER"   "/usr/bin/less"
 
 main () {
   case "${1:-}" in
@@ -129,4 +128,4 @@ usage () {
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"
