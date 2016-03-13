@@ -13,21 +13,20 @@ main () {
   taskname="${1:-}"
   exit_if_is_empty "${taskname}"
   filename="jiff-${taskname}"
-  task_dir="$(set_taskdir "${2:-}")"
-  cd "${task_dir}"
   add_task "${filename}" "${taskname}"
-  cd "${_JIFF_ROOT}/libexec"
-  make_symlink "${filename}" "../context/current/${filename}"
 }
 
 add_task () {
   local filename
 
+  task_dir="$(set_taskdir "${2:-}")"
+  cd "${task_dir}"
   filename="${1}"
   exit_if_is_file "${filename}"
   copy_sample_task "${filename}" "${2}"
   "${EDITOR}" "${filename}"
   git add "${filename}"
+  make_symlink "${filename}" "${task_dir}/${filename}"
 }
 
 copy_sample_task () {
@@ -43,7 +42,7 @@ copy_sample_task () {
 
 set_taskdir () {
   case "${1}" in
-    "default" )
+    "role" )
       echo "${_JIFF_ROOT}/role/current"
       ;;
     * )
