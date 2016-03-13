@@ -18,11 +18,13 @@ add_task () {
   taskname="${1}"
   filename="jiff-${taskname}"
   task_dir="$(set_taskdir "${2:-}")"
+  cd "${_JIFF_ROOT}/libexec"
   cd "${task_dir}"
   exit_if_is_file "${filename}"
   copy_sample_task "${filename}" "${taskname}"
   "${EDITOR}" "${filename}"
   git add "${filename}"
+  cd "${_JIFF_ROOT}/libexec"
   make_symlink "${filename}" "${task_dir}/${filename}"
 }
 

@@ -10,10 +10,7 @@ main () {
 
   task="${1:-}"
   shift
-  if is_empty "${task}"; then
-    usage
-    exit 1
-  fi
+  usage_and_exit_if_is_empty "${task}"
   run_and_exit_if_is_jiff_task "${task}-add" "${@}"
 }
 
