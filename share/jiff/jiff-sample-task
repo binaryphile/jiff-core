@@ -3,12 +3,10 @@
 
 source stdlib
 
-set_default "WorkingDir" "${HOME}/tmp"
-
 main () {
   echo ""
 }
 
 return 0 2>/dev/null || true
 strict_mode on
-run_in_directory "${WorkingDir}" "main" "${@}"
+main "${@}"
