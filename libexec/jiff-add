@@ -9,11 +9,12 @@ main () {
   local task
 
   task="${1:-}"
+  shift
   if is_empty "${task}"; then
     usage
     exit 1
   fi
-  run_and_exit_if_is_jiff_task "${task}-add"
+  run_and_exit_if_is_jiff_task "${task}-add" "${@}"
 }
 
 usage () {

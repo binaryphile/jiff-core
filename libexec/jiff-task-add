@@ -10,10 +10,10 @@ main () {
   local filename
   local task_dir
 
-  taskname="${2:-}"
+  taskname="${1:-}"
   exit_if_is_empty "${taskname}"
   filename="jiff-${taskname}"
-  task_dir="$(set_taskdir "${3:-}")"
+  task_dir="$(set_taskdir "${2:-}")"
   cd "${task_dir}"
   add_task "${filename}" "${taskname}"
   cd "${_JIFF_ROOT}/libexec"
