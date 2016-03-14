@@ -24,7 +24,7 @@ main () {
     report_current
     exit 0
   fi
-  if match "${context}" "none"; then
+  if is_match "${context}" "none"; then
     remove_links
     make_rolelinks
     exit 0
@@ -63,7 +63,7 @@ make_links () {
   make_symlink "${DistroLink}" "${distro}"
   make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
   for file in "${ContextLink}"/jiff-*; do
-    match "${file}" "${ContextLink}/jiff-*" && continue
+    is_match "${file}" "${ContextLink}/jiff-*" && continue
     task="$(base_name "${file}")"
     make_symlink "${LibExecDir}/${task}" "${file}"
   done

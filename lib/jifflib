@@ -56,7 +56,7 @@ make_rolelinks () {
   local file
 
   for file in "${RoleLink}"/jiff-*; do
-    match "${file}" "${RoleLink}/jiff-*" && continue
+    is_match "${file}" "${RoleLink}/jiff-*" && continue
     task="$(base_name "${file}")"
     make_symlink "${LibExecDirectory}/${task}" "${file}"
   done

@@ -21,7 +21,7 @@ main () {
     exit 0
   fi
   remove_links
-  if match "${role}" "none"; then
+  if is_match "${role}" "none"; then
     jiff context none
     exit 0
   fi

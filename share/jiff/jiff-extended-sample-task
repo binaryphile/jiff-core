@@ -14,7 +14,7 @@ source arraylib   #  array functions
 main () {
   local subtasks
 
-  if match "${1:-}" "--complete"; then
+  if is_match "${1:-}" "--complete"; then
     provide_completions
     exit 0
   fi
@@ -42,7 +42,7 @@ do_subtasks () {
   subtask="${1:-}"
   shift
 
-  # if match "${subtask}" "taskone"; then
+  # if is_match "${subtask}" "taskone"; then
   #   do_taskone "${@}"
   #   exit 0
   # fi
