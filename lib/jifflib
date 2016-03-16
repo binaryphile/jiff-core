@@ -34,6 +34,17 @@ is_jiff_task () {
   is_file "${LibExecDirectory}/jiff-${1}"
 }
 
+make_rolelinks () {
+  local task
+  local file
+
+  for file in "${RoleLink}"/jiff-*; do
+    is_match "${file}" "${RoleLink}/jiff-*" && continue
+    task="$(base_name "${file}")"
+    make_symlink "${LibExecDirectory}/${task}" "${file}"
+  done
+}
+
 run_and_exit_if_is_jiff_task () {
   local task
 
@@ -51,13 +62,14 @@ run_if_is_jiff_task () {
   fi
 }
 
-make_rolelinks () {
-  local task
-  local file
+run_subtask () {
+  local verb
+  local object
 
-  for file in "${RoleLink}"/jiff-*; do
-    is_match "${file}" "${RoleLink}/jiff-*" && continue
-    task="$(base_name "${file}")"
-    make_symlink "${LibExecDirectory}/${task}" "${file}"
-  done
+  verb="${1}"
+  shift
+  object="${1:-}"
+  shift
+  usage_and_exit_if_is_empty "${object}"
+  run_and_exit_if_is_jiff_task "${object}-${verb}" "${@}"
 }
