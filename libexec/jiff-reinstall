@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
-# Usage: jiff reinstall [package]
-# Summary: Reinstall a system package
+# Usage: jiff reinstall PACKAGE
 
 source stdlib
-source jifflib
 source distrolib
+source jifflib
+
+Verb="reinstall"
 
 main () {
-  local package
+  run_subtask "${Verb}" "${@}"
+  reinstall_package "${1}"
+}
 
-  package="${1}"
-  run_and_exit_if_is_jiff_task "${package}-reinstall"
-  reinstall_package "${package}"
+usage () {
+  echo "Usage: jiff ${Verb} TASK"
 }
 
 return 0 2>/dev/null || true

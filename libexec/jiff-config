@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# Usage: jiff config [package]
-# Summary: Configure a software package
+# Usage: jiff config PACKAGE
 
 source stdlib
 source jifflib
 
+Verb="config"
+
 main () {
-  run_and_exit_if_is_jiff_task "${1:-}-config"
+  run_subtask "${Verb}" "${@}"
+}
+
+usage () {
+  echo "Usage: jiff ${Verb} PACKAGE"
 }
 
 return 0 2>/dev/null || true
