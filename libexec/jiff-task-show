@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Usage: jiff task-show TASK
+# Summary: Show a jiff task
+
+source stdlib
+
+set_default  "PAGER"   "/usr/bin/less"
+
+main () {
+  "${PAGER}" "${_JIFF_ROOT}/libexec/jiff-${1}"
+}
+
+usage () {
+  echo "Usage: jiff task-show TASK"
+}
+
+return 0 2>/dev/null || true
+strict_mode on
+main "${@}"
