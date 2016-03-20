@@ -71,5 +71,5 @@ run_subtask () {
   object="${1:-}"
   shift
   usage_and_exit_if_is_empty "${object}"
-  run_and_exit_if_is_jiff_task "${object}-${verb}" "${@}"
+  run_and_exit_if_is_jiff_task "${verb}-${object}" "${@}"
 }
