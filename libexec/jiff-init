@@ -1,27 +1,17 @@
 #!/usr/bin/env bash
+# Usage: jiff init
 
 source stdlib
-source arraylib
+source jifflib
 
-declare -r RoleLink="${_JIFF_ROOT}/role/current"
-declare -r ContextLink="${_JIFF_ROOT}/context/current"
+Verb="init"
 
 main () {
-  local context
-  local contexts
-  local hosts
-  local hostname
+  run_subtask "${Verb}" "${@}"
+}
 
-  is_file "${RoleLink}" || jiff role admin
-  is_not_file "${ContextLink}" || exit 0
-  contexts=( jiff _data -g hosts.keys )
-  hostname="$(hostname)"
-  for context in "${contexts[@]}"; do
-    hosts=( jiff _data -g "hosts.${context}" )
-    if ary_contains "${hostname}" "$hosts[@]"; then
-      jiff context "${context}"
-    fi
-  done
+usage () {
+  echo "Usage: jiff ${Verb} TASK"
 }
 
 return 0 2>/dev/null || true
