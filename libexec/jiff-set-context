@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
-# Usage: jiff context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
-# Summary: Add tasks which presume an os distribution, user role and set of available resources
+# Summary: choose a set of tasks based on context and, optionally,
+# distribution
+#
+# Usage:
+#   jiff set context [-d <distro>|--distro=<distro>] (<context>|none)
+#
+# Options:
+#   <distro>    One of: rhel-6|centos-6|ubuntu-14|ubuntu-15
+#   <context>   One of: avwob|armt|office|peak10
 
 source stdlib
 source arraylib
