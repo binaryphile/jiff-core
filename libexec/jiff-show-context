@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Summary: show the current context
+#
+# Usage:
+#   jiff show context
+
+source stdlib
+source jifflib
+
+declare -r ContextLink="${_JIFF_ROOT}/context/current"
+
+main () {
+  report_current
+}
+
+report_current () {
+  local current
+
+  if is_link "${ContextLink}"; then
+    current=$(current_context)
+  else
+    current=none
+  fi
+  cat <<EOM
+${current}
+EOM
+}
+
+return 0 2>/dev/null || true
+strict_mode on
+main "${@}"

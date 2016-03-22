@@ -8,9 +8,9 @@ source stdlib
 main () {
   basher upgrade binaryphile/bash-libs
   basher upgrade binaryphile/jiff-core
-  current="$(jiff context | tail -1 | cut -d " " -f3)"
+  current="$(jiff show context | tail -1 | cut -d " " -f3)"
   cd "${_JIFF_ROOT}"
-  jiff context none
+  jiff set context none
   git checkout -- .
   git fetch
   git reset --hard origin/master
