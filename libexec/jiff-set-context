@@ -28,8 +28,7 @@ main () {
   distro="${2:-}"
   if is_empty "${context}"; then
     usage
-    report_current
-    exit 0
+    exit 1
   fi
   if is_match "${context}" "none"; then
     remove_links
@@ -95,23 +94,15 @@ EOM
   done
 }
 
-report_current () {
-  local current
-
-  if is_link "${ContextLink}"; then
-    current=$(current_context)
-  else
-    current=none
-  fi
-  cat <<EOM
-Currently using: ${current}
-EOM
-}
-
 usage () {
 # TODO: fill in contexts from $Distros
   cat <<EOM
-Usage: jiff set context CONTEXT|none [rhel-6|centos-6|ubuntu-14|ubuntu-15]
+Usage:
+  jiff set context [-d <distro>|--distro=<distro>] (<context>|none)
+
+Options:
+  <distro>    One of: rhel-6|centos-6|ubuntu-14|ubuntu-15
+  <context>   One of: avwob|armt|office|peak10
 
 Available contexts:
 

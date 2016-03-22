@@ -6,9 +6,11 @@ source stdlib
 
 # TODO: read deps from package.sh
 main () {
+  local current
+
   basher upgrade binaryphile/bash-libs
   basher upgrade binaryphile/jiff-core
-  current="$(jiff show context | tail -1 | cut -d " " -f3)"
+  current="$(jiff show context)"
   cd "${_JIFF_ROOT}"
   jiff set context none
   git checkout -- .
