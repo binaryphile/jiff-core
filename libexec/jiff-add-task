@@ -23,7 +23,7 @@ add_task () {
   exit_if_is_file "${filename}"
   copy_sample_task "${filename}" "${taskname}"
   "${EDITOR}" "${filename}"
-  git add "${filename}"
+  git add -f "${filename}"
   cd "${_JIFF_ROOT}/libexec"
   make_symlink "${filename}" "${task_dir}/${filename}"
 }
