@@ -11,14 +11,11 @@ main () {
   basher upgrade binaryphile/bash-libs
   basher upgrade binaryphile/jiff-core
   current="$(jiff show context)"
-  cd "${_JIFF_ROOT}"
   jiff set context none
-  git checkout -- .
-  git fetch
-  git reset --hard origin/master
+  basher upgrade binaryphile/jiff-personal
   jiff set context "${current}"
 }
 
 return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+main "$@"
