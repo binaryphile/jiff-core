@@ -7,7 +7,7 @@ set_default "EDITOR" "/usr/bin/vim"
 
 main () {
   exit_if_is_empty "${1:-}"
-  add_task "${@}"
+  add_task "$@"
 }
 
 add_task () {
@@ -32,8 +32,8 @@ copy_sample_task () {
   local filename
   local taskname
 
-  filename="${1}"
-  taskname="${2}"
+  filename="$1"
+  taskname="$2"
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
   if shell_is_bash && is_file "${HOME}/.bash_history"; then
@@ -43,7 +43,7 @@ copy_sample_task () {
 }
 
 set_taskdir () {
-  case "${1}" in
+  case "$1" in
     "role" )
       echo "${_JIFF_ROOT}/role/current"
       ;;
@@ -54,4 +54,4 @@ set_taskdir () {
 
 return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+main "$@"

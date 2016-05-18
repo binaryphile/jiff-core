@@ -8,7 +8,7 @@ set_default "EDITOR" "/usr/bin/vim"
 main () {
   local filename
 
-  filename="jiff-${1}"
+  filename="jiff-$1"
   cd "${_JIFF_ROOT}/context/current"
   "${EDITOR}" "${filename}"
   git add "${filename}"
@@ -16,4 +16,4 @@ main () {
 
 return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+main "$@"

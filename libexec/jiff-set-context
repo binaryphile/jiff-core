@@ -61,8 +61,8 @@ make_links () {
   local file
   local task
 
-  context="${1}"
-  distro="${2}"
+  context="$1"
+  distro="$2"
   is_link "${RoleLink}" || jiff role admin
   role="$(readlink "${RoleLink}")"
   make_symlink "${ContextLink}" "${context}/${distro}/${role}"
@@ -113,4 +113,4 @@ EOM
 
 return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+main "$@"

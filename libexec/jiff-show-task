@@ -4,10 +4,10 @@
 
 source stdlib
 
-set_default  "PAGER"   "/usr/bin/less"
+set_default "PAGER" "/usr/bin/less"
 
 main () {
-  "${PAGER}" "${_JIFF_ROOT}/libexec/jiff-${1}"
+  "${PAGER}" "${_JIFF_ROOT}/libexec/jiff-$1"
 }
 
 usage () {
@@ -16,4 +16,4 @@ usage () {
 
 return 0 2>/dev/null || true
 strict_mode on
-main "${@}"
+main "$@"
