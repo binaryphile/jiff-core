@@ -22,12 +22,12 @@ main () {
   fi
   remove_links
   if is_match "${role}" "none"; then
-    jiff context none
+    jiff set context none
     exit 0
   fi
   make_symlink "${RoleLink}" "${role}"
   if is_link "${ContextLink}"; then
-    jiff context "$(current_context)"
+    jiff set context "$(current_context)"
   else
     make_rolelinks
   fi
