@@ -2,18 +2,18 @@
 # Usage: jiff task-show TASK
 # Summary: Show a jiff task
 
-source stdlib
+source std.sh
 
-set_default "PAGER" "/usr/bin/less"
+std::set_default "PAGER" "/usr/bin/less"
 
-main () {
+main() {
   "${PAGER}" "${_JIFF_ROOT}/libexec/jiff-$1"
 }
 
-usage () {
-  echo "Usage: jiff task-show TASK"
+usage() {
+  printf "Usage: jiff task-show TASK\n"
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

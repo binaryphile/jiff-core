@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 # Usage: jiff reinstall PACKAGE
 
-source stdlib
-source distrolib
-source jifflib
+source std.sh
+source distro.sh
+source jiff.sh
 
 Verb="reinstall"
 
-main () {
-  run_subtask "${Verb}" "$@"
-  reinstall_package "$1"
+main() {
+  jiff::run_subtask "${Verb}" "$@"
+  dist::reinstall_package "$1"
 }
 
-usage () {
-  echo "Usage: jiff ${Verb} TASK"
+usage() {
+  printf "Usage: jiff %s TASK\n" "${Verb}"
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # Usage: jiff update PACKAGE
 
-source stdlib
-is_not_file "${_JIFF_ROOT}/lib/distrolib" || source distrolib
-source jifflib
+source std.sh
+std::is_not_file "${_JIFF_ROOT}/lib/distro.sh" || source distro.sh
+source jiff.sh
 
 Verb="update"
 
-main () {
-  run_subtask "${Verb}" "$@"
+main() {
+  jiff::run_subtask "${Verb}" "$@"
   update_package "$1"
 }
 
-usage () {
-  echo "Usage: jiff ${Verb} PACKAGE"
+usage() {
+  printf "Usage: jiff %s PACKAGE\n" "${Verb}"
 }
 
 return 0 2>/dev/null || true

@@ -2,10 +2,10 @@
 # Usage: jiff jiff-update
 # Summary: Update jiff
 
-source stdlib
+source std.sh
 
 # TODO: read deps from package.sh
-main () {
+main() {
   local current
 
   basher upgrade binaryphile/bash-libs
@@ -17,5 +17,5 @@ main () {
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

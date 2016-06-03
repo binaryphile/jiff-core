@@ -9,9 +9,9 @@
 #   <distro>    One of: rhel-6|centos-6|ubuntu-14|ubuntu-15
 #   <context>   One of: avwob|armt|office|peak10
 
-source stdlib
-source arraylib
-source jifflib
+source std.sh
+source array.sh
+source jiff.sh
 
 declare -r LibExecDir="${_JIFF_ROOT}/libexec"
 declare -r DistroLink="${_JIFF_ROOT}/distro/current"
@@ -19,25 +19,25 @@ declare -r RoleLibLink="${_JIFF_ROOT}/lib/rolelib"
 declare -r ContextLink="${_JIFF_ROOT}/context/current"
 declare -r RoleLink="${_JIFF_ROOT}/role/current"
 
-main () {
+main() {
   local context
   local distro
   local distros
 
   context="${1:-}"
   distro="${2:-}"
-  if is_empty "${context}"; then
+  if std::is_empty "${context}"; then
     usage
     exit 1
   fi
-  if is_match "${context}" "none"; then
+  if std::is_match "${context}" "none"; then
     remove_links
     make_rolelinks
     exit 0
   fi
   distros=( $(available_distros) )
-  is_not_empty "${distro}" || distro="$(detect_os)"
-  if ary_contains "${distro}" "${distros[@]}"; then
+  std::is_not_empty "${distro}" || distro="$(dist::detect_os)"
+  if ary::contains "${distro}" "${distros[@]}"; then
     remove_links
     make_rolelinks
     make_links "${context}" "${distro}"
@@ -45,16 +45,15 @@ main () {
   fi
 }
 
-available_contexts () {
-  # shellcheck disable=SC2010
-  ls "${_JIFF_ROOT}/context" | grep -v current
+available_contexts() {
+  printf "%s/context/*" "${_JIFF_ROOT}/context/*" | grep -v current
 }
 
-available_distros () {
-  ls "${_JIFF_ROOT}/distro"
+available_distros() {
+  printf "%s/distro" "${_JIFF_ROOT}"
 }
 
-make_links () {
+make_links() {
   local context
   local distro
   local role
@@ -63,25 +62,25 @@ make_links () {
 
   context="$1"
   distro="$2"
-  is_link "${RoleLink}" || jiff role admin
+  std::is_link "${RoleLink}" || jiff role admin
   role="$(readlink "${RoleLink}")"
-  make_symlink "${ContextLink}" "${context}/${distro}/${role}"
-  make_symlink "${DistroLink}" "${distro}"
-  make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
+  std::make_symlink "${ContextLink}" "${context}/${distro}/${role}"
+  std::make_symlink "${DistroLink}" "${distro}"
+  std::make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
   for file in "${ContextLink}"/jiff-*; do
-    is_match "${file}" "${ContextLink}/jiff-*" && continue
-    task="$(base_name "${file}")"
-    make_symlink "${LibExecDir}/${task}" "${file}"
+    std::is_match "${file}" "${ContextLink}/jiff-*" && continue
+    task="$(std::base_name "${file}")"
+    std::make_symlink "${LibExecDir}/${task}" "${file}"
   done
 }
 
-remove_links () {
+remove_links() {
   local file
   local link
   local links
 
   for file in "${ContextLink}"/jiff-*; do
-    link="$(base_name "${file}")"
+    link="$(std::base_name "${file}")"
     rm -f "${LibExecDir}/${link}"
   done
   read -d "" -a links <<EOM || true
@@ -94,7 +93,7 @@ EOM
   done
 }
 
-usage () {
+usage() {
 # TODO: fill in contexts from $Distros
   cat <<EOM
 Usage:
@@ -112,5 +111,5 @@ EOM
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

@@ -2,9 +2,9 @@
 # Usage: jiff jiff-reinstall
 # Summary: Reinstall jiff
 
-source stdlib
+source std.sh
 
-main () {
+main() {
   # TODO: make this read the deps file
   current="$(jiff context | tail -1 | cut -d " " -f3)" # TODO: make this read the link and maybe put in jifflib?
   basher uninstall binaryphile/bash-libs
@@ -17,5 +17,5 @@ main () {
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

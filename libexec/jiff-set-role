@@ -1,50 +1,48 @@
 #!/usr/bin/env bash
 # Usage: jiff role [admin|user]
 
-source stdlib
-source jifflib
-source arraylib
-source stringlib
+source std.sh
+source jiff.sh
+source array.sh
+source string.sh
 
 declare -r LibExecDir="${_JIFF_ROOT}/libexec"
 declare -r ContextLink="${_JIFF_ROOT}/context/current"
 declare -r RoleLink="${_JIFF_ROOT}/role/current"
 
-main () {
+main() {
   local role
-  local context
 
   role="${1:-}"
-  if is_empty "${role}"; then
+  if std::is_empty "${role}"; then
     usage
     report_current
     exit 0
   fi
   remove_links
-  if is_match "${role}" "none"; then
+  if std::is_match "${role}" "none"; then
     jiff set context none
     exit 0
   fi
-  make_symlink "${RoleLink}" "${role}"
-  if is_link "${ContextLink}"; then
+  std::make_symlink "${RoleLink}" "${role}"
+  if std::is_link "${ContextLink}"; then
     jiff set context "$(current_context)"
   else
     make_rolelinks
   fi
 }
 
-available_roles () {
-  # shellcheck disable=SC2010
-  ls "${_JIFF_ROOT}/role" | grep -v current
+available_roles() {
+  printf "%s" "${_JIFF_ROOT}/role/*" | grep -v current
 }
 
-remove_links () {
+remove_links() {
   local file
   local link
   local links
 
   for file in "${RoleLink}"/jiff-*; do
-    link="$(base_name "${file}")"
+    link="$(std::base_name "${file}")"
     rm -f "${LibExecDir}/${link}"
   done
   read -d "" -a links <<EOM || true
@@ -55,10 +53,10 @@ EOM
   done
 }
 
-report_current () {
+report_current() {
   local current
 
-  if is_link "${RoleLink}"; then
+  if std::is_link "${RoleLink}"; then
     current="$(readlink "${RoleLink}")"
   else
     current=none
@@ -68,7 +66,7 @@ Currently using: ${current}
 EOM
 }
 
-usage () {
+usage() {
 # TODO: fill in roles from $Roles
   cat <<EOM
 Usage: jiff role ROLE
@@ -81,5 +79,5 @@ EOM
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

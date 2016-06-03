@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # Usage: jiff init
 
-source stdlib
-source jifflib
+source std.sh
+source jiff.sh
 
 Verb="init"
 
-main () {
-  run_subtask "${Verb}" "$@"
+main() {
+  jiff::run_subtask "${Verb}" "$@"
 }
 
-usage () {
-  echo "Usage: jiff ${Verb} TASK"
+usage() {
+  printf "Usage: jiff %s TASK\n" "${Verb}"
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"

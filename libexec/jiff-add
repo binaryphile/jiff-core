@@ -6,12 +6,12 @@ source jiff.sh
 
 Verb="add"
 
-main () {
+main() {
   jiff::run_subtask "${Verb}" "$@"
 }
 
-usage () {
-  echo "Usage: jiff ${Verb} TASK"
+usage() {
+  printf "Usage: jiff %s TASK\n" "${Verb}"
 }
 
 return 0 2>/dev/null || true

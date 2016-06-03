@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Usage: jiff task-edit
 
-source stdlib
+source std.sh
 
-set_default "EDITOR" "/usr/bin/vim"
+std::set_default "EDITOR" "/usr/bin/vim"
 
-main () {
+main() {
   local filename
 
   filename="jiff-$1"
@@ -15,5 +15,5 @@ main () {
 }
 
 return 0 2>/dev/null || true
-strict_mode on
+std::strict_mode on
 main "$@"
