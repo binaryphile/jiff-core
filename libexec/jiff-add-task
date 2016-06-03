@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Usage: jiff task-add
 
-source stdlib
+source std.sh
 
 set_default "EDITOR" "/usr/bin/vim"
 
