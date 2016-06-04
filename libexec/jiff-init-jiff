@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source std.sh
+source sh.sh
 source array.sh
 
 declare -r RoleLink="${_JIFF_ROOT}/role/current"
@@ -25,5 +25,5 @@ main() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

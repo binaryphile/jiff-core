@@ -2,9 +2,9 @@
 # Usage: jiff task-show TASK
 # Summary: Show a jiff task
 
-source std.sh
+source sh.sh
 
-std::set_default "PAGER" "/usr/bin/less"
+sh::set_default "PAGER" "/usr/bin/less"
 
 main() {
   "${PAGER}" "${_JIFF_ROOT}/libexec/jiff-$1"
@@ -15,5 +15,5 @@ usage() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

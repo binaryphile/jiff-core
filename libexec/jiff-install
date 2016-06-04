@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Usage: jiff install PACKAGE
 
-source std.sh
+source sh.sh
 source distro.sh
 source jiff.sh
 
 Verb="install"
 
 main() {
-  std::run_subtask "${Verb}" "$@"
+  sh::run_subtask "${Verb}" "$@"
   dist::install_package "$1"
 }
 
@@ -17,5 +17,5 @@ usage() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

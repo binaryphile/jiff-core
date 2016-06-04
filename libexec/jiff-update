@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Usage: jiff update PACKAGE
 
-source std.sh
-std::is_not_file "${_JIFF_ROOT}/lib/distro.sh" || source distro.sh
+source sh.sh
+sh::is_not_file "${_JIFF_ROOT}/lib/distro.sh" || source distro.sh
 source jiff.sh
 
 Verb="update"

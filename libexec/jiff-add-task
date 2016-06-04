@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Usage: jiff task-add
 
-source std.sh
+source sh.sh
 
-std::set_default "EDITOR" "/usr/bin/vim"
+sh::set_default "EDITOR" "/usr/bin/vim"
 
 main() {
-  std::exit_if_is_empty "${1:-}"
+  sh::exit_if_is_empty "${1:-}"
   add_task "$@"
 }
 
@@ -20,12 +20,12 @@ add_task() {
   task_dir="$(set_taskdir "${2:-}")"
   cd "${_JIFF_ROOT}/libexec"
   cd "${task_dir}"
-  std::exit_if_is_file "${filename}"
+  sh::exit_if_is_file "${filename}"
   copy_sample_task "${filename}" "${taskname}"
   "${EDITOR}" "${filename}"
   git add -f "${filename}"
   cd "${_JIFF_ROOT}/libexec"
-  std::make_symlink "${filename}" "${task_dir}/${filename}"
+  sh::make_symlink "${filename}" "${task_dir}/${filename}"
 }
 
 copy_sample_task() {
@@ -36,7 +36,7 @@ copy_sample_task() {
   taskname="$2"
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   sed -i -e "s|jiff sample-task|jiff ${taskname}|" "${filename}"
-  if std::shell_is_bash && std::is_file "${HOME}/.bash_history"; then
+  if sh::shell_is_bash && std::is_file "${HOME}/.bash_history"; then
     echo "" >> "${filename}"
     tail -50 "${HOME}/.bash_history" >> "${filename}"
   fi
@@ -53,5 +53,5 @@ set_taskdir() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

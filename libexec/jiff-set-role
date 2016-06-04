@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Usage: jiff role [admin|user]
 
-source std.sh
+source sh.sh
 source jiff.sh
 source array.sh
 source string.sh
@@ -14,18 +14,18 @@ main() {
   local role
 
   role="${1:-}"
-  if std::is_empty "${role}"; then
+  if sh::is_empty "${role}"; then
     usage
     report_current
     exit 0
   fi
   remove_links
-  if std::is_match "${role}" "none"; then
+  if sh::is_match "${role}" "none"; then
     jiff set context none
     exit 0
   fi
-  std::make_symlink "${RoleLink}" "${role}"
-  if std::is_link "${ContextLink}"; then
+  sh::make_symlink "${RoleLink}" "${role}"
+  if sh::is_link "${ContextLink}"; then
     jiff set context "$(current_context)"
   else
     make_rolelinks
@@ -42,7 +42,7 @@ remove_links() {
   local links
 
   for file in "${RoleLink}"/jiff-*; do
-    link="$(std::base_name "${file}")"
+    link="$(sh::base_name "${file}")"
     rm -f "${LibExecDir}/${link}"
   done
   read -d "" -a links <<EOM || true
@@ -56,7 +56,7 @@ EOM
 report_current() {
   local current
 
-  if std::is_link "${RoleLink}"; then
+  if sh::is_link "${RoleLink}"; then
     current="$(readlink "${RoleLink}")"
   else
     current=none
@@ -79,5 +79,5 @@ EOM
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

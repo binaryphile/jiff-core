@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Usage: jiff init
 
-source std.sh
+source sh.sh
 source jiff.sh
 
 Verb="init"
@@ -15,5 +15,5 @@ usage() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

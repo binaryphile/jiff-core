@@ -2,7 +2,7 @@
 # Usage: jiff jiff-reinstall
 # Summary: Reinstall jiff
 
-source std.sh
+source sh.sh
 
 main() {
   # TODO: make this read the deps file
@@ -17,5 +17,5 @@ main() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

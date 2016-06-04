@@ -2,7 +2,7 @@
 # Usage: jiff jiff-update
 # Summary: Update jiff
 
-source std.sh
+source sh.sh
 
 # TODO: read deps from package.sh
 main() {
@@ -17,5 +17,5 @@ main() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

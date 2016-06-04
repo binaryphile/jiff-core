@@ -9,7 +9,7 @@
 #   <distro>    One of: rhel-6|centos-6|ubuntu-14|ubuntu-15
 #   <context>   One of: avwob|armt|office|peak10
 
-source std.sh
+source sh.sh
 source array.sh
 source jiff.sh
 
@@ -26,17 +26,17 @@ main() {
 
   context="${1:-}"
   distro="${2:-}"
-  if std::is_empty "${context}"; then
+  if sh::is_empty "${context}"; then
     usage
     exit 1
   fi
-  if std::is_match "${context}" "none"; then
+  if sh::is_match "${context}" "none"; then
     remove_links
     make_rolelinks
     exit 0
   fi
   distros=( $(available_distros) )
-  std::is_not_empty "${distro}" || distro="$(dist::detect_os)"
+  sh::is_not_empty "${distro}" || distro="$(dist::detect_os)"
   if ary::contains "${distro}" "${distros[@]}"; then
     remove_links
     make_rolelinks
@@ -62,15 +62,15 @@ make_links() {
 
   context="$1"
   distro="$2"
-  std::is_link "${RoleLink}" || jiff role admin
+  sh::is_link "${RoleLink}" || jiff role admin
   role="$(readlink "${RoleLink}")"
-  std::make_symlink "${ContextLink}" "${context}/${distro}/${role}"
-  std::make_symlink "${DistroLink}" "${distro}"
-  std::make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
+  sh::make_symlink "${ContextLink}" "${context}/${distro}/${role}"
+  sh::make_symlink "${DistroLink}" "${distro}"
+  sh::make_symlink "${RoleLibLink}" "../distro/${distro}/${role}lib"
   for file in "${ContextLink}"/jiff-*; do
-    std::is_match "${file}" "${ContextLink}/jiff-*" && continue
-    task="$(std::base_name "${file}")"
-    std::make_symlink "${LibExecDir}/${task}" "${file}"
+    sh::is_match "${file}" "${ContextLink}/jiff-*" && continue
+    task="$(sh::base_name "${file}")"
+    sh::make_symlink "${LibExecDir}/${task}" "${file}"
   done
 }
 
@@ -80,7 +80,7 @@ remove_links() {
   local links
 
   for file in "${ContextLink}"/jiff-*; do
-    link="$(std::base_name "${file}")"
+    link="$(sh::base_name "${file}")"
     rm -f "${LibExecDir}/${link}"
   done
   read -d "" -a links <<EOM || true
@@ -111,5 +111,5 @@ EOM
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"

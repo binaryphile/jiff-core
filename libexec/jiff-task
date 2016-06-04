@@ -2,10 +2,10 @@
 # Usage: jiff task add|edit|publish|remove|show TASK
 # Summary: Manage jiff tasks
 
-source std.sh
+source sh.sh
 
-std::set_default "EDITOR" "/usr/bin/vim"
-std::set_default "PAGER"  "/usr/bin/less"
+sh::set_default "EDITOR" "/usr/bin/vim"
+sh::set_default "PAGER"  "/usr/bin/less"
 
 main() {
   case "${1:-}" in
@@ -23,7 +23,7 @@ main() {
 }
 
 argument_or_exit() {
-  if std::is_empty "$1"; then
+  if sh::is_empty "$1"; then
     usage
     exit 0
   fi
@@ -34,7 +34,7 @@ copy_sample_task() {
 
   install -m 755 "${_JIFF_ROOT}/share/jiff/jiff-sample-task" "${filename}"
   sed -i -e "s|jiff sample-task|jiff $2|" "${filename}"
-  if std::shell_is_bash && std::is_file "${HOME}/.bash_history"; then
+  if sh::shell_is_bash && std::is_file "${HOME}/.bash_history"; then
     printf "" >> "${filename}"
     tail -50 "${HOME}/.bash_history" >> "${filename}"
   fi
@@ -60,11 +60,11 @@ execute_task() {
   taskname="$2"
   filename="jiff-${taskname}"
   task_dir="$(set_taskdir "${3:-}")"
-  std::push_dir "${task_dir}"
+  sh::push_dir "${task_dir}"
   case "$1" in
     "add" )
       git_add_task "${filename}" "${taskname}"
-      std::make_symlink "${_JIFF_ROOT}/libexec/${filename}" "../context/current/${filename}"
+      sh::make_symlink "${_JIFF_ROOT}/libexec/${filename}" "../context/current/${filename}"
       ;;
     "edit" )
       git_edit_task "${filename}"
@@ -79,13 +79,13 @@ execute_task() {
       "${PAGER}" "${filename}"
       ;;
   esac
-  std::pop_dir
+  sh::pop_dir
 }
 
 git_add_task() {
   local filename="$1"
 
-  std::exit_if_is_file "${filename}"
+  sh::exit_if_is_file "${filename}"
   copy_sample_task "${filename}" "$2"
   "${EDITOR}" "${filename}"
   git add "${filename}"
@@ -127,5 +127,5 @@ usage() {
 }
 
 return 0 2>/dev/null || true
-std::strict_mode on
+sh::strict_mode on
 main "$@"
