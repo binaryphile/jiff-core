@@ -4,7 +4,7 @@
 # Usage:
 #   jiff show context
 
-source sh.sh
+source shell.sh
 source jiff.sh
 
 declare -r ContextLink="${_JIFF_ROOT}/context/current"

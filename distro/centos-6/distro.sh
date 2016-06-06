@@ -1,0 +1,1 @@
+../../../../binaryphile/bash-libs/lib/distro/centos_6.sh

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Usage: jiff show
 
-source sh.sh
+source shell.sh
 source jiff.sh
 
 Verb="show"
