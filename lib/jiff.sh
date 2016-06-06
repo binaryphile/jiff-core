@@ -2,7 +2,8 @@
 
 # Functions specific to jiff but not platform-specific
 
-source std.sh
+source path.sh
+source shell.sh
 source string.sh
 source array.sh
 
@@ -31,7 +32,7 @@ jiff::context_less_role () {
 }
 
 jiff::is_jiff_task () {
-  std::is_file "${LibExecDirectory}/jiff-${1}"
+  pth::is_file "${LibExecDirectory}/jiff-${1}"
 }
 
 jiff::make_rolelinks () {
@@ -39,9 +40,9 @@ jiff::make_rolelinks () {
   local file
 
   for file in "${RoleLink}"/jiff-*; do
-    std::is_match "${file}" "${RoleLink}/jiff-*" && continue
-    task="$(std::base_name "${file}")"
-    std::make_symlink "${LibExecDirectory}/${task}" "${file}"
+    str::eql? file "${RoleLink}/jiff-*" && continue
+    task="$(pth::base_name "${file}")"
+    pth::make_symlink "${LibExecDirectory}/${task}" "${file}"
   done
 }
 
@@ -70,6 +71,6 @@ jiff::run_subtask () {
   shift
   object="${1:-}"
   shift
-  std::usage_and_exit_if_is_empty "${object}"
+  sh::usage_and_exit_if_is_empty "${object}"
   jiff::run_and_exit_if_is_jiff_task "${verb}-${object}" "${@}"
 }
