@@ -28,6 +28,6 @@ ${current}
 EOM
 }
 
-return 0 2>/dev/null || true
+return 0 2>/dev/null || :
 sh.strict_mode on
 main "$@"

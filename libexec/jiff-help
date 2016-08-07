@@ -47,7 +47,7 @@ print_help() {
 }
 
 command_path() {
-  command -v "jiff-$command" || command -v "jiff-sh-$command" || true
+  command -v "jiff-$command" || command -v "jiff-sh-$command" || :
 }
 
 summary() {

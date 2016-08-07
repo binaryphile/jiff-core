@@ -126,6 +126,6 @@ usage() {
   printf "Usage: jiff task add|edit|remove|publish|show TASK [default]\n"
 }
 
-return 0 2>/dev/null || true
+return 0 2>/dev/null || :
 sh::strict_mode on
 main "$@"

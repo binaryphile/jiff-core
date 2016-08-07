@@ -83,7 +83,7 @@ remove_links() {
     link="$(sh::base_name "${file}")"
     rm -f "${LibExecDir}/${link}"
   done
-  read -d "" -a links <<EOM || true
+  read -d "" -a links <<EOM || :
 ${ContextLink}
 ${DistroLink}
 ${RoleLibLink}
@@ -110,6 +110,6 @@ $(available_contexts)
 EOM
 }
 
-return 0 2>/dev/null || true
+return 0 2>/dev/null || :
 sh::strict_mode on
 main "$@"

@@ -71,6 +71,6 @@ usage () {
   echo "Usage: jiff task --option-one [subtask]"
 }
 
-return 0 2>/dev/null || true
+return 0 2>/dev/null || :
 strict_mode on
 main "${@}"
