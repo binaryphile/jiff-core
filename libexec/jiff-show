@@ -7,13 +7,13 @@ source jiff.sh
 Verb="show"
 
 main() {
-  jiff::run_subtask "${Verb}" "$@"
+  jiff.run_subtask "$Verb" "$@"
 }
 
 usage() {
-  echo "Usage: jiff ${Verb} TASK"
+  printf "Usage: jiff %s TASK" "$Verb"
 }
 
 return 0 2>/dev/null || true
-sh::strict_mode on
+sh.strict_mode on
 main "$@"

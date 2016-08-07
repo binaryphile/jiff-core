@@ -4,9 +4,11 @@
 # Usage:
 #   jiff show context
 
-source shell.sh
+source file.sh
 source jiff.sh
+source shell.sh
 
+# shellcheck disable=SC2034
 declare -r ContextLink="${_JIFF_ROOT}/context/current"
 
 main() {
@@ -16,8 +18,8 @@ main() {
 report_current() {
   local current
 
-  if sh::is_link "${ContextLink}"; then
-    current="$(jiff::current_context)"
+  if fil.symlink? ContextLink; then
+    current="$(jiff.current_context)"
   else
     current=none
   fi
@@ -27,5 +29,5 @@ EOM
 }
 
 return 0 2>/dev/null || true
-sh::strict_mode on
+sh.strict_mode on
 main "$@"
