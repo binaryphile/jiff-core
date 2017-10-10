@@ -1,1 +1,1 @@
-../../concorde/lib/concorde.bash
+../../../binaryphile/concorde/lib/concorde.bash
